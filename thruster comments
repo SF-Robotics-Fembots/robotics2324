@@ -1,8 +1,8 @@
 # EXCEPTION TEST 
 
-import lgpio
-#works w/ sockets
-#library for r
+import lgpio 
+#works w/ sockets 
+#library for raspberry pi
 import pygame
 import board
 import busio
