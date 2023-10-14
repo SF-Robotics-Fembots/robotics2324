@@ -18,7 +18,6 @@ class Window(QMainWindow):
 
     def initUI(self):
         super().__init__()
-        self.initUI()
         self.setWindowTitle('GUI')
         self.setWindowIcon(QIcon('web.png'))
         self.setGeometry(200, 120, 2500, 1500) #(x-coor, y-coor, width, height)
@@ -131,10 +130,8 @@ class Window(QMainWindow):
 def main():
 
     app = QApplication(sys.argv)
-    mainwindow = QMainWindow()
     window = Window()
-    window.setupUi(mainwindow)
-    mainwindow.show()
+    window.initUI()
     
     sys.exit(app.exec_())
 
