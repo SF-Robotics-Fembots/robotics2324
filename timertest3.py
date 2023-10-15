@@ -4,7 +4,7 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
-import math
+import time
 
 
 class Window(QMainWindow):
@@ -16,7 +16,7 @@ class Window(QMainWindow):
 		self.setWindowTitle("Python ")
 
 		# setting geometry
-		self.setGeometry(100, 100, 400, 600)
+		self.setGeometry(100, 100, 800, 900)
 
 		# calling method
 		self.UiComponents()
@@ -26,30 +26,18 @@ class Window(QMainWindow):
 
 	# method for widgets
 	def UiComponents(self):
-
-		# variables
-		# count variable
+		self.timerCount = 0
+		self.running = True
+		self.startTime = 0
+		self.minutes = 15
 		self.seconds = 0
-		self.minutes = 0
-		self.count = 0
 
-		# start flag
-		self.start = False
-
-		# creating push button to get time in seconds
-		button = QPushButton("Set time(s)", self)
-
-		# setting geometry to the push button
-		button.setGeometry(125, 100, 150, 50)
-
-		# adding action to the button
-		button.clicked.connect(self.get_seconds)
 
 		# creating label to show the seconds
-		self.label = QLabel("//TIMER//", self)
+		self.label = QLabel("TIMER: 15 : 00", self)
 
 		# setting geometry of label
-		self.label.setGeometry(100, 200, 200, 50)
+		self.label.setGeometry(100, 500, 500, 200)
 
 		# setting border to the label
 		self.label.setStyleSheet("border : 3px solid black")
@@ -91,79 +79,56 @@ class Window(QMainWindow):
 		timer = QTimer(self)
 
 		# adding action to timer
-		timer.timeout.connect(self.showTime)
+		timer.timeout.connect(self.update)
 
 		# update the timer every tenth second
 		timer.start(1000)
 
-	# method called by timer
-	def showTime(self):
-
-		# checking if flag is true
-		if self.start:
-			# incrementing the counter
-			self.count -= 1
-
-			# timer is completed
-			if self.count == 0:
-
-				# making flag false
-				self.start = False
-
-				# setting text to the label
-				self.label.setText("Completed !!!! ")
-
-		if self.start:
-			# getting text from count
-			text = str(self.count / 60) + " : " + str(math.floor(self.count % 60))
-
-			# showing text
-			self.label.setText(text)
-
-
-	# method called by the push button
-	def get_seconds(self):
-
-		# making flag false
-		self.start = False
-
-		# getting seconds and flag
-		second, done = QInputDialog.getInt(self, 'Seconds', 'Enter Seconds:')
-		minute, done = QInputDialog.getInt(self, 'Minutes', 'Enter Minutes:')
-
-		# if flag is true
-		if done:
-			# changing the value of count
-			self.count = minute*600
-			minutes = int(self.count/600)
-			seconds = int(self.count%600)
-
-			# setting text to the label
-			self.label.setText(str(minutes) + ":"+ str(seconds))
-
 	def start_action(self):
 		# making flag true
-		self.start = True
-
-		# count = 0
-		if self.count == 0:
-			self.start = False
+		if self.timerCount < 1:
+			self.reset_action()
+		if not self.running:
+			self.update()
+			self.running = True
+			starttime = time.time()
 
 	def pause_action(self):
-
-		# making flag false
-		self.start = False
+		# making flag true
+		if self.running:
+			self.label(self.update)
+			self.running = False
+			#self.timerCount = 1
 
 	def reset_action(self):
+		# making flag true
+		if self.running:
+			self.running = False
+        
+		self.minutes = 15
+		self.seconds = 0
+		self.label.setText("TIMER: 15 : 00")
 
-		# making flag false
-		self.start = False
+	def update(self):
+		if self.seconds == 00:
+			self.minutes -= 1
+			self.seconds = 60
+		if self.minutes == 00:
+			self.reset_action()
+		self.seconds -= 1
 
-		# setting count value to 0
-		self.count = 0
+		self.minutes_string = f'{self.minutes}' if self.minutes > 9 else f'0{self.minutes}'
+		self.seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
+		self.label.setText("TIMER:" + self.minutes_string + " : " + self.seconds_string)
 
-		# setting label text
-		self.label.setText("//TIMER//")
+        
+
+		
+
+			
+    
+
+			
 
 
 
