@@ -6,6 +6,11 @@ from PyQt5.QtCore import * #class allows for object communication
 import sys #imports library for different Python functions and variables
 import time
 
+
+'''
+add two labels that tell when laser is on and when pilot inverison is on
+'''
+
 #creates main GUI window
 class Window(QMainWindow):
 
@@ -92,16 +97,25 @@ class Window(QMainWindow):
 		cam5.setStyleSheet("border-radius : 10; border: 2px solid midnightblue; color: midnightblue")
 
         #humidity sensor and styling
-		humidity_sensor = QPushButton("Humidity Sensor", self)
-		humidity_sensor.setGeometry(120, 350, 335, 200)
-		humidity_sensor.move(630, 400)
-		humidity_sensor.setStyleSheet("border-radius : 10; border: 3px solid midnightblue; color: midnightblue")
+		self.humidity_sensor = QLabel("Humidity Sensor", self)
+		self.humidity_sensor.setGeometry(120, 350, 335, 200)
+		self.humidity_sensor.move(630, 380)
+		self.humidity_sensor.setAlignment(Qt.AlignLeft)
+		self.humidity_sensor.setStyleSheet("border-radius : 10; border: 3px solid midnightblue; color: midnightblue; padding: 15px")
 
         #depth sensor and styling
-		depth_sensor = QPushButton("Depth Sensor", self)
-		depth_sensor.setGeometry(120, 350, 335, 200)
-		depth_sensor.move(970, 400)
-		depth_sensor.setStyleSheet("border-radius : 10; border: 3px solid midnightblue; color: midnightblue")
+		self.depth_sensor = QLabel("Depth Sensor", self)
+		self.depth_sensor.setGeometry(120, 350, 335, 200)
+		self.depth_sensor.move(970, 380)
+		self.depth_sensor.setAlignment(Qt.AlignLeft)
+		self.depth_sensor.setStyleSheet("border-radius : 10; border: 3px solid midnightblue; color: midnightblue; padding: 15px")
+		
+
+		self.thruster_values = QLabel("Thruster Values: ", self)
+		self.thruster_values.setGeometry(120, 350, 335, 200)
+		self.thruster_values.move(630, 600)
+		self.thruster_values.setAlignment(Qt.AlignLeft)
+		self.thruster_values.setStyleSheet("border-radius : 15; border: 3px solid midnightblue; color: midnightblue; padding: 15px")
 		
         #notepad label styling
 		self.notepad_label = QLabel("NOTEPAD", self)
@@ -135,10 +149,10 @@ class Window(QMainWindow):
 		self.label.setGeometry(100, 500, 670, 180)
 
 		# setting border to the label
-		self.label.setStyleSheet("border: 4px solid midnightblue; color: midnightblue")
+		self.label.setStyleSheet("border: 4px solid midnightblue; color: midnightblue;")
 
 		# setting font to the label
-		self.label.setFont(QFont('Times', 15))
+		self.label.setFont(QFont('Times', 18))
 
 		# setting alignment to the label
 		self.label.setAlignment(Qt.AlignCenter)
@@ -147,7 +161,7 @@ class Window(QMainWindow):
 		self.label.move(630, 60)
 		
 		# creating start button
-		start_button = QPushButton("Start", self)
+		start_button = QPushButton("START", self)
 
 		#sets styling to the button
 		start_button.setGeometry(125, 350, 215, 75)
@@ -158,7 +172,7 @@ class Window(QMainWindow):
 		start_button.clicked.connect(self.start_action)
 
 		# creating pause button
-		pause_button = QPushButton("Pause", self)
+		pause_button = QPushButton("PAUSE", self)
 
 		# setting style to the button 
 		pause_button.setGeometry(125, 350, 215, 75)
@@ -169,7 +183,7 @@ class Window(QMainWindow):
 		pause_button.clicked.connect(self.pause_action)
 
 		# creating reset button
-		reset_button = QPushButton("Reset", self)
+		reset_button = QPushButton("RESET", self)
 
 		# setting style to the button
 		reset_button.setGeometry(125, 350, 215, 75)
