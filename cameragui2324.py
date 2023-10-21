@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         self.setGeometry(100, 100, 800, 600)
 
         #set the style sheet
-        self.setStyleSheet("background : lightgrey;")
+        self.setStyleSheet("background : lightgray;")
 
         #get the available cameras
         self.available_cameras = QCameraInfo.availableCameras()
@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
         #if no camera found
         if not self.available_cameras:
             #exit the code
-            sys.exit() #does this just mean exit system?
+            sys.exit() #does this just mean exit system?(it exits Python system)
 
         #create a status bar
         self.status = QStatusBar()
