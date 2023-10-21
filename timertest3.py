@@ -27,7 +27,7 @@ class Window(QMainWindow):
 	# method for widgets
 	def UiComponents(self):
 		self.timerCount = 0
-		self.running = True
+		self.running = False
 		self.startTime = 0
 		self.minutes = 15
 		self.seconds = 0
@@ -98,6 +98,7 @@ class Window(QMainWindow):
 		if self.running:
 			self.label(self.update)
 			self.running = False
+			
 			#self.timerCount = 1
 
 	def reset_action(self):
@@ -105,9 +106,9 @@ class Window(QMainWindow):
 		if self.running:
 			self.running = False
         
-		self.minutes = 15
-		self.seconds = 0
-		self.label.setText("TIMER: 15 : 00")
+		#self.minutes = 15
+		#self.seconds = 0
+		#self.label.setText("TIMER: 15 : 00")
 
 	def update(self):
 		if self.seconds == 00:

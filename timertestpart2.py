@@ -4,7 +4,6 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
-import math
 
 
 class Window(QMainWindow):
@@ -29,9 +28,7 @@ class Window(QMainWindow):
 
 		# variables
 		# count variable
-		self.seconds = 0
-		self.minutes = 0
-		self.count = 0
+		self.count = 30
 
 		# start flag
 		self.start = False
@@ -94,7 +91,7 @@ class Window(QMainWindow):
 		timer.timeout.connect(self.showTime)
 
 		# update the timer every tenth second
-		timer.start(1000)
+		timer.start(100)
 
 	# method called by timer
 	def showTime(self):
@@ -115,7 +112,7 @@ class Window(QMainWindow):
 
 		if self.start:
 			# getting text from count
-			text = str(self.count / 60) + " : " + str(math.floor(self.count % 60))
+			text = str(self.count / 10) + " s"
 
 			# showing text
 			self.label.setText(text)
@@ -129,17 +126,14 @@ class Window(QMainWindow):
 
 		# getting seconds and flag
 		second, done = QInputDialog.getInt(self, 'Seconds', 'Enter Seconds:')
-		minute, done = QInputDialog.getInt(self, 'Minutes', 'Enter Minutes:')
 
 		# if flag is true
 		if done:
 			# changing the value of count
-			self.count = minute*600
-			minutes = int(self.count/600)
-			seconds = int(self.count%600)
+			self.count = second * 10
 
 			# setting text to the label
-			self.label.setText(str(minutes) + ":"+ str(seconds))
+			self.label.setText(str(second))
 
 	def start_action(self):
 		# making flag true
