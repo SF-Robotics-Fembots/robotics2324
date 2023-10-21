@@ -1,8 +1,8 @@
 # EXCEPTION TEST 
 
-import lgpio 
-#works w/ sockets 
-#library for raspberry pi
+import lgpio
+#works w/ sockets
+#library for r
 import pygame
 import board
 import busio
@@ -20,6 +20,9 @@ import time
 #hz, ms, etc.
 import socket
 #socket: one andpoint of a two-way communication link btwn two programs running the network
+
+#MOD: from array import array
+
 def main():
 	# library setup
 	pygame.init()
@@ -49,6 +52,7 @@ def main():
 	#NOTE: cycle time for PWM doesnt change, but duty cycle does
 	#NOTE: pwm wire = signal connection to thrusters
 	#0x2666: sets range for power of duty cycle
+#MOD: change to thrusterchannel = array[shield.channels[0], shield.channels[1], shield.channels[2], shield.channels[3], shield.channels[4], shield.channels[5]]
 
 	throttle_in = 2200
 	throttlePW = int(throttle_in/10000*65536)
@@ -110,6 +114,17 @@ def main():
 	thrusterChannel6.duty_cycle = throttlePW
 	time.sleep(0)
 	#lines 52-110: setting throttle values
+#MOD: throttle_in = 2200
+# throttlePW = int(throttle_in/10000*65536)
+# thrusterchannel.duty_cycle = throttlePW
+# time.sleep(0)
+
+#MOD: throttle_in = 1480
+# throttlePW = int(throttle_in/10000*65536)
+# thrusterchannel.duty_cycle = throttlePW
+# time.sleep(0)
+
+#MOD: calcDir = array[horizontal, vertical]
 
 	#horizontal thrusters calculations
 	def calcHorizontal(joyValue, thrusterNum, direction):
@@ -136,6 +151,8 @@ def main():
 
 			#lines 115-123: calculates vertical and horizontal power values for joystick values that are not in the deadzone
 
+#MOD: change calcVertical & calcHorizontal to caclDir
+#MOD: delete def calcVeritical
 
 	clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	#SOCK_STREAM: socket type for TCP
@@ -153,6 +170,12 @@ def main():
 	prevV = 0
 	prevR = 0
 	#everytime data is sent, previous values are set to 0 (updates & loops values)
+
+#MOD: prevValue = array[prevX, prevY, prevV, prevR]
+#MOD: prevValue = 0
+
+#MOD: value_speed = array[x_speed, y_speed, v_speed, r_speed]
+#input this in the while TRue function
 
 	directionRecieved = "a"
 	direction = 1
@@ -206,6 +229,8 @@ def main():
 			#finding difference of speeds to evaluate which ones need power limiting 
 			#values used in next if statement
 
+#MOD: diffValue = value_speed - prevValue
+
 			if (abs(diffX) > 0.05):
 				x_speed = prevX + ((diffX/abs(diffX)) * 0.10)
 			if (abs(diffY) > 0.05):
@@ -217,11 +242,15 @@ def main():
 				#helps manage power
 				#if diffvalue is greater than .05, then it will assign speed a lower values by multiplying diffValue by .1
 
+#MOD: if(abs(diffValue) > 0.05):
+		#value_speed = prevValue + ((diffValue/abs(diffValue)) * 0.10)
 
 			prevX = x_speed
 			prevY = y_speed
 			prevR = r_speed
 			prevV = v_speed
+
+#MOD: prevValue = value_speed
 
 			# multiplies original values by 100 (necessary for calculations)
 			x_speed = int((x_speed)*50)
@@ -230,6 +259,8 @@ def main():
 			v_speed = int((v_speed)*50)
 			#calculate new speeds
 			#rotation is not 50 because 50 is too fast
+
+#MOD: value_speed = int((value_speed)*50)
 
 			#print(x_speed)
 			#print(y_speed)
