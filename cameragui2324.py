@@ -6,7 +6,6 @@ from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
 import os
 import sys
-
 from PyQt5.QtWidgets import QWidget
 
 #main window class
@@ -36,7 +35,7 @@ class MainWindow(QMainWindow):
         self.status = QStatusBar()
 
         #set the stylesheet to the status bar
-        self.status.setStyleSheet("background : white;")
+        self.status.setStyleSheet("background : lightgrey;")
 
         #add the status bar to the main window
         self.setStatusBar(self.status)
@@ -102,7 +101,7 @@ class MainWindow(QMainWindow):
         toolbar.addWidget(camera_selector)
 
         #setting tool bar stylesheet
-        toolbar.setStyleSheet("background : white;")
+        toolbar.setStyleSheet("background : lightgrey;")
 
 
         #setting window title
