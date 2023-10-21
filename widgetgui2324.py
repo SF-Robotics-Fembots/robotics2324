@@ -233,15 +233,20 @@ class Window(QMainWindow):
     #defines update function which runs the timer 
 	def update(self):
 		if self.running: 
+			#once a minute has gone by then decrease a minute
 			if self.seconds == 00:
 				self.minutes -= 1
 				self.seconds = 60
+			#once all minutes are done, then reset the timer back to 15 minutes
 			if self.minutes == 00:
 				self.reset_action()
 			self.seconds -= 1
 			
+            #formats time to include leading zeros
 			self.minutes_string = f'{self.minutes}' if self.minutes > 9 else f'0{self.minutes}'
 			self.seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
+			
+            #displays the minutes and seconds onto the window
 			self.label.setText("TIMER: " + self.minutes_string + " : " + self.seconds_string)
 
 # create pyqt5 app
