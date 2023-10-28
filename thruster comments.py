@@ -316,7 +316,7 @@ def main():
 			# loop to collect value for each thruster using horizontal calculation function
 			for tNum in range(0,4):
 				#goes through code four times
-				thrusterVals[tNum] = int((calcHorizontalandVert(x_speed, tNum, xDirArray) + calcHorizontalandVert(y_speed, tNum, yDirArray) + calcHorizontal(r_speed, tNum, rDirArray)))
+				thrusterVals[tNum] = int((calcHorizontalandVert(x_speed, tNum, xDirArray) + calcHorizontalandVert(y_speed, tNum, yDirArray) + calcHorizontalandVert(r_speed, tNum, rDirArray)))
 			#print(thrusterVals[tNum])
 			# loop to collect value for each thruster using vertical calculation function
 			for vNum in range(0,2):

@@ -21,8 +21,6 @@ import time
 import socket
 #socket: one andpoint of a two-way communication link btwn two programs running the network
 
-#MOD: from array import array
-
 def main():
 	# library setup
 	pygame.init()
