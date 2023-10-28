@@ -6,7 +6,6 @@ from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
 import os
 import sys
-
 from PyQt5.QtWidgets import QWidget
 
 #main window class
@@ -20,7 +19,7 @@ class MainWindow(QMainWindow):
         self.setGeometry(100, 100, 800, 600)
 
         #set the style sheet
-        self.setStyleSheet("background : lightgrey;")
+        self.setStyleSheet("background : lightgray;")
 
         #get the available cameras
         self.available_cameras = QCameraInfo.availableCameras()
@@ -30,13 +29,13 @@ class MainWindow(QMainWindow):
         #if no camera found
         if not self.available_cameras:
             #exit the code
-            sys.exit() #does this just mean exit system?
+            sys.exit() #does this just mean exit system?(it exits Python system)
 
         #create a status bar
         self.status = QStatusBar()
 
         #set the stylesheet to the status bar
-        self.status.setStyleSheet("background : white;")
+        self.status.setStyleSheet("background : lightgrey;")
 
         #add the status bar to the main window
         self.setStatusBar(self.status)
@@ -102,7 +101,7 @@ class MainWindow(QMainWindow):
         toolbar.addWidget(camera_selector)
 
         #setting tool bar stylesheet
-        toolbar.setStyleSheet("background : white;")
+        toolbar.setStyleSheet("background : lightgrey;")
 
 
         #setting window title
