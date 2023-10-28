@@ -51,21 +51,16 @@ def main():
 			dataFraud = (clientSocket.recv(1024)).decode()
 			data = (clientSocket.recv(1024)).decode()
 
-
 			x_speed = dataFraud
-			x_speed = x_speed[1:]
-			x_speed = float(x_speed)
 
 			y_speed = data[data.find('y'):data.find('r')]
-			y_speed = y_speed[1:]
-			y_speed = float(y_speed)
 
 			r_speed = data[data.find('r'):data.find('v')]
-			r_speed = r_speed[1:]
-			r_speed = float(r_speed)
+
 			v_speed = data[data.find('v'):data.find('x')]
-			v_speed = v_speed[1:]
-			v_speed = float(v_speed)
+
+			value_speed = value_speed[1:]
+			value_speed = float(value_speed)
 
 			value_speed = array[x_speed, y_speed, r_speed, v_speed]
 			diffValue = value_speed - prevValue
@@ -81,6 +76,7 @@ def main():
 			
 			directionRecieved = ((clientSocket1.recv(1024)).decode())
 			directionRecieved = directionRecieved[0]
+
 			if (directionRecieved == "a"):
 			    direction = 1
 			elif (directionRecieved == "b"):
@@ -101,8 +97,6 @@ def main():
 				thrusterVals[tNum] = int((calcHorizontalandVert(x_speed, tNum, xDirArray) + calcHorizontalandVert(y_speed, tNum, yDirArray) + calcHorizontalandVert(r_speed, tNum, rDirArray)))
 			for vNum in range(0,2):
 				vertThrusterVals[vNum] = int((calcHorizontalandVert(v_speed, vNum, vDirArray)))
-
-
 
 			max_thruster = 0
 			for thrusters in range(0,4):
