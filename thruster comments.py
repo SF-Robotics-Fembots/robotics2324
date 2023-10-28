@@ -20,9 +20,6 @@ import time
 #hz, ms, etc.
 import socket
 #socket: one andpoint of a two-way communication link btwn two programs running the network
-import array
-
-#MOD: from array import array
 
 def main():
 	# library setup
@@ -42,89 +39,79 @@ def main():
 	#100 Hz = cycle time for PWM signal
 	#meaning robot speed can change 100 times a second
 
-	# thrusterChannel1 = shield.channels[0]
-	# thrusterChannel2 = shield.channels[1]
-	# thrusterChannel3 = shield.channels[2]
-	# thrusterChannel4 = shield.channels[3]
-	# thrusterChannel5 = shield.channels[4]
-	# thrusterChannel6 = shield.channels[5]
-	# thrusterChannel1.duty_cycle = 0x2666
-	thrusterChannel = array[shield.channels[0], shield.channels[1], shield.channels[2], shield.channels[3], shield.channels[4], shield.channels[5], shield.channels[6]]
+	thrusterChannel1 = shield.channels[0]
+	thrusterChannel2 = shield.channels[1]
+	thrusterChannel3 = shield.channels[2]
+	thrusterChannel4 = shield.channels[3]
+	thrusterChannel5 = shield.channels[4]
+	thrusterChannel6 = shield.channels[5]
+	thrusterChannel1.duty_cycle = 0x2666
 	#duty cycle: ration of PW to range (tells power of thrusters/how fast thrusters go)
 	#NOTE: cycle time for PWM doesnt change, but duty cycle does
 	#NOTE: pwm wire = signal connection to thrusters
 	#0x2666: sets range for power of duty cycle
 #MOD: change to thrusterchannel = array[shield.channels[0], shield.channels[1], shield.channels[2], shield.channels[3], shield.channels[4], shield.channels[5]]
 
-	# throttle_in = 2200
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel1.duty_cycle = throttlePW
-	# time.sleep(0)
+	throttle_in = 2200
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel1.duty_cycle = throttlePW
+	time.sleep(0)
 
-	# throttle_in = 1480
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel1.duty_cycle = throttlePW
-	# time.sleep(0)
-
-	# throttle_in = 2200
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel2.duty_cycle = throttlePW
-	# time.sleep(0)
-
-	# throttle_in = 1480
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel2.duty_cycle = throttlePW
-	# time.sleep(0)
-
-	# throttle_in = 2200
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel3.duty_cycle = throttlePW
-	# time.sleep(0 )
-
-	# throttle_in = 1480
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel3.duty_cycle = throttlePW
-	# time.sleep(0)
-
-	# throttle_in = 2200
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel4.duty_cycle = throttlePW
-	# time.sleep(0)
-
-	# throttle_in = 1480
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel4.duty_cycle = throttlePW
-	# time.sleep(0)
-
-	# throttle_in = 2200
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel5.duty_cycle = throttlePW
-	# time.sleep(0)
-
-	# throttle_in = 1480
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel5.duty_cycle = throttlePW
-	# time.sleep(0)
-
-	# throttle_in = 2200
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel6.duty_cycle = throttlePW
-	# time.sleep(0)
-
-	# throttle_in = 1480
-	# throttlePW = int(throttle_in/10000*65536)
-	# thrusterChannel6.duty_cycle = throttlePW
-	# time.sleep(0)
-	#lines 52-110: setting throttle values
 	throttle_in = 1480
 	throttlePW = int(throttle_in/10000*65536)
-	thrusterChannel.duty_cycle = throttlePW
+	thrusterChannel1.duty_cycle = throttlePW
 	time.sleep(0)
 
 	throttle_in = 2200
 	throttlePW = int(throttle_in/10000*65536)
-	thrusterChannel.duty_cycle = throttlePW
+	thrusterChannel2.duty_cycle = throttlePW
 	time.sleep(0)
+
+	throttle_in = 1480
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel2.duty_cycle = throttlePW
+	time.sleep(0)
+
+	throttle_in = 2200
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel3.duty_cycle = throttlePW
+	time.sleep(0 )
+
+	throttle_in = 1480
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel3.duty_cycle = throttlePW
+	time.sleep(0)
+
+	throttle_in = 2200
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel4.duty_cycle = throttlePW
+	time.sleep(0)
+
+	throttle_in = 1480
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel4.duty_cycle = throttlePW
+	time.sleep(0)
+
+	throttle_in = 2200
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel5.duty_cycle = throttlePW
+	time.sleep(0)
+
+	throttle_in = 1480
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel5.duty_cycle = throttlePW
+	time.sleep(0)
+
+	throttle_in = 2200
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel6.duty_cycle = throttlePW
+	time.sleep(0)
+
+	throttle_in = 1480
+	throttlePW = int(throttle_in/10000*65536)
+	thrusterChannel6.duty_cycle = throttlePW
+	time.sleep(0)
+	#lines 52-110: setting throttle values
 #MOD: throttle_in = 2200
 # throttlePW = int(throttle_in/10000*65536)
 # thrusterchannel.duty_cycle = throttlePW
@@ -138,7 +125,7 @@ def main():
 #MOD: calcDir = array[horizontal, vertical]
 
 	#horizontal thrusters calculations
-	def calcHorizontalandVert(joyValue, thrusterNum, direction):
+	def calcHorizontal(joyValue, thrusterNum, direction):
 		if (-5 <= joyValue <= 5):         # can adjust to create deadzone
 			return 0
 		#creates deadzones for where the joystick values do not do anything
@@ -150,17 +137,17 @@ def main():
 			#return (((1/750) * ((abs(joyValue))**2.5)) * ((abs(joyValue))/(joyValue)) * direction[thrusterNum])
 
 	# vertical thrusters calculations
-	# def calcVertical(joyValue, thrusterNum, direction):
-	# 	if (-5 <= joyValue <= 5):
-	# 		return 0
-	# 	# calculation for everything not 0
-	# 	else:
-	# 		joyValue = joyValue - ((abs(joyValue)/joyValue) * 5)
-	# 		return joyValue * direction[thrusterNum]
-	# 		#return (((1/750) * ((abs(joyValue))**2.5)) * ((abs(joyValue))/(joyValue)) * direction[thrusterNum]) #was 1000
-	# 		#vertical values change if joystick values are btwn -5 and 5
+	def calcVertical(joyValue, thrusterNum, direction):
+		if (-5 <= joyValue <= 5):
+			return 0
+		# calculation for everything not 0
+		else:
+			joyValue = joyValue - ((abs(joyValue)/joyValue) * 5)
+			return joyValue * direction[thrusterNum]
+			#return (((1/750) * ((abs(joyValue))**2.5)) * ((abs(joyValue))/(joyValue)) * direction[thrusterNum]) #was 1000
+			#vertical values change if joystick values are btwn -5 and 5
 
-	# 		#lines 115-123: calculates vertical and horizontal power values for joystick values that are not in the deadzone
+			#lines 115-123: calculates vertical and horizontal power values for joystick values that are not in the deadzone
 
 #MOD: change calcVertical & calcHorizontal to caclDir
 #MOD: delete def calcVeritical
@@ -176,8 +163,10 @@ def main():
 	clientSocket.connect(("192.168.1.100", 9090))
 	clientSocket1.connect(("192.168.1.100", 7070))
         
-	#prevValue = array[prevX, prevY, prevV, prevR]
-	prevValue = 0
+	prevX = 0
+	prevY = 0
+	prevV = 0
+	prevR = 0
 	#everytime data is sent, previous values are set to 0 (updates & loops values)
 
 #MOD: prevValue = array[prevX, prevY, prevV, prevR]
@@ -231,46 +220,41 @@ def main():
 			#then, the float goes through a char*
 			#the float is translated through the char* (via parsing) into another float that the top computer can understand&receive
 
-			# diffX = x_speed - prevX
-			# diffY = y_speed - prevY
-			# diffR = r_speed - prevR
-			# diffV = v_speed - prevV
+			diffX = x_speed - prevX
+			diffY = y_speed - prevY
+			diffR = r_speed - prevR
+			diffV = v_speed - prevV
 			#finding difference of speeds to evaluate which ones need power limiting 
 			#values used in next if statement
-			value_speed = array[x_speed, y_speed, r_speed, v_speed]
-			diffValue = value_speed - prevValue
 
 #MOD: diffValue = value_speed - prevValue
 
-			# if (abs(diffX) > 0.05):
-			# 	x_speed = prevX + ((diffX/abs(diffX)) * 0.10)
-			# if (abs(diffY) > 0.05):
-			# 	y_speed = prevY + ((diffY/abs(diffY)) * 0.10)
-			# if (abs(diffR) > 0.05):
-			# 	r_speed = prevR + ((diffR/abs(diffR)) * 0.10)
-			# if (abs(diffV) > 0.05):
-			# 	v_speed = prevV + ((diffV/abs(diffV)) * 0.10)
-			if(abs(diffValue) > 0.05):
-				value_speed = prevValue + ((diffValue/abs(diffValue)) * 0.10)
-			
+			if (abs(diffX) > 0.05):
+				x_speed = prevX + ((diffX/abs(diffX)) * 0.10)
+			if (abs(diffY) > 0.05):
+				y_speed = prevY + ((diffY/abs(diffY)) * 0.10)
+			if (abs(diffR) > 0.05):
+				r_speed = prevR + ((diffR/abs(diffR)) * 0.10)
+			if (abs(diffV) > 0.05):
+				v_speed = prevV + ((diffV/abs(diffV)) * 0.10)
 				#helps manage power
 				#if diffvalue is greater than .05, then it will assign speed a lower values by multiplying diffValue by .1
 
 #MOD: if(abs(diffValue) > 0.05):
 		#value_speed = prevValue + ((diffValue/abs(diffValue)) * 0.10)
 
-			# prevX = x_speed
-			# prevY = y_speed
-			# prevR = r_speed
-			# prevV = v_speed
-			prevValue = value_speed
+			prevX = x_speed
+			prevY = y_speed
 			prevR = r_speed
+			prevV = v_speed
 
 #MOD: prevValue = value_speed
 
 			# multiplies original values by 100 (necessary for calculations)
-			value_speed = int((value_speed)*50)
-			prevR = int((r_speed)*25)
+			x_speed = int((x_speed)*50)
+			y_speed = int((y_speed)*50)
+			r_speed = int((r_speed)*25)
+			v_speed = int((v_speed)*50)
 			#calculate new speeds
 			#rotation is not 50 because 50 is too fast
 
@@ -316,12 +300,12 @@ def main():
 			# loop to collect value for each thruster using horizontal calculation function
 			for tNum in range(0,4):
 				#goes through code four times
-				thrusterVals[tNum] = int((calcHorizontalandVert(x_speed, tNum, xDirArray) + calcHorizontalandVert(y_speed, tNum, yDirArray) + calcHorizontalandVert(r_speed, tNum, rDirArray)))
+				thrusterVals[tNum] = int((calcHorizontal(x_speed, tNum, xDirArray) + calcHorizontal(y_speed, tNum, yDirArray) + calcHorizontal(r_speed, tNum, rDirArray)))
 			#print(thrusterVals[tNum])
 			# loop to collect value for each thruster using vertical calculation function
 			for vNum in range(0,2):
 				#goes through code two times
-				vertThrusterVals[vNum] = int((calcHorizontalandVert(v_speed, vNum, vDirArray)))
+				vertThrusterVals[vNum] = int((calcVertical(v_speed, vNum, vDirArray)))
 
 			#print("first print")
 			#print(thrusterVals)
@@ -401,29 +385,23 @@ def main():
 			#totalEverything = powerThrusterVals[0] + powerThrusterVals[1] + powerThrusterVals[2] + powerThrusterVals[3] + powerVertThrusterVals[0] + powerVertThrusterVals[1]
 			#print(totalEverything)
 
-			# throttlePW = int(powerThrusterVals[0]/10000*65536)
-			# thrusterChannel1.duty_cycle = throttlePW
+			throttlePW = int(powerThrusterVals[0]/10000*65536)
+			thrusterChannel1.duty_cycle = throttlePW
 
-			# throttlePW = int(powerThrusterVals[1]/10000*65536)
-			# thrusterChannel2.duty_cycle = throttlePW
+			throttlePW = int(powerThrusterVals[1]/10000*65536)
+			thrusterChannel2.duty_cycle = throttlePW
 
-			# throttlePW = int(powerThrusterVals[2]/10000*65536)
-			# thrusterChannel3.duty_cycle = throttlePW
+			throttlePW = int(powerThrusterVals[2]/10000*65536)
+			thrusterChannel3.duty_cycle = throttlePW
 
-			# throttlePW = int(powerThrusterVals[3]/10000*65536)
-			# thrusterChannel4.duty_cycle = throttlePW
+			throttlePW = int(powerThrusterVals[3]/10000*65536)
+			thrusterChannel4.duty_cycle = throttlePW
 
-			# throttlePW = int(powerVertThrusterVals[0]/10000*65536)
-			# thrusterChannel5.duty_cycle = throttlePW
+			throttlePW = int(powerVertThrusterVals[0]/10000*65536)
+			thrusterChannel5.duty_cycle = throttlePW
 
-			# throttlePW = int(powerVertThrusterVals[1]/10000*65536)
-			# thrusterChannel6.duty_cycle = throttlePW
-			throttlePW = int(powerThrusterVals[0, 1, 2, 3]/10000*65536)
-			thrusterChannel.duty_cycle = throttlePW
-
-			throttlePW = int(powerVertThrusterVals[0, 1]/10000*65536)
-			thrusterChannel.duty_cycle = throttlePW
-
+			throttlePW = int(powerVertThrusterVals[1]/10000*65536)
+			thrusterChannel6.duty_cycle = throttlePW
 			#values(10000*65536) calculates final pw values (that number can be processed by esc)
 			#sending it to specific thrusters
 			#power calculations
