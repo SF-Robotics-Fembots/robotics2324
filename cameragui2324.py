@@ -6,7 +6,13 @@ from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
 import os
 import sys
+import cv2 #one of the most important libraries we have
 from PyQt5.QtWidgets import QWidget
+
+#initialize the cameras?
+video1 = cv2.VideoCapture("http://192.168.1.99:8080/stream")
+
+
 
 #main window class
 class MainWindow(QMainWindow):
@@ -22,14 +28,16 @@ class MainWindow(QMainWindow):
         self.setStyleSheet("background : lightgray;")
 
         #get the available cameras
-        self.available_cameras = QCameraInfo.availableCameras()
+        self.available_cameras = [video1]
+        #self.available_cameras = QCameraInfo.availableCameras()
+        #self.available_cameras.append(video1)
 
         print(self.available_cameras)
 
         #if no camera found
         if not self.available_cameras:
             #exit the code
-            sys.exit() #does this just mean exit system?(it exits Python system)
+            sys.exit() #does this just mean exit system? (it exits Python system)
 
         #create a status bar
         self.status = QStatusBar()
