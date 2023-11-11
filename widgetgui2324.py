@@ -36,7 +36,7 @@ class Window(QMainWindow):
         #camera label and styling
 		self.camera_label = QLabel("CAMERAS", self)
 		self.camera_label.setGeometry(75, 375, 450, 120)
-		self.camera_label.setStyleSheet("border: 4px solid white; border-radius: 10; background: #5D7090; color: white")
+		self.camera_label.setStyleSheet("border: 4px solid white; border-radius: 10; background: #5D7090; color: #F1F6FD")
 		self.camera_label.setFont(QFont('Time', 15))
 		self.camera_label.setAlignment(Qt.AlignCenter)
 		self.camera_label.move(1380, 90)
@@ -97,14 +97,14 @@ class Window(QMainWindow):
 		cam5.setStyleSheet("border-radius : 10; border: 2px solid midnightblue; color: midnightblue")
 
         #humidity sensor and styling
-		self.humidity_sensor = QLabel("Humidity Sensor", self)
+		self.humidity_sensor = QLabel("Humidity Sensor: ", self)
 		self.humidity_sensor.setGeometry(120, 350, 335, 200)
 		self.humidity_sensor.move(630, 380)
 		self.humidity_sensor.setAlignment(Qt.AlignLeft)
 		self.humidity_sensor.setStyleSheet("border-radius : 10; border: 3px solid midnightblue; color: midnightblue; padding: 15px")
 
         #depth sensor and styling
-		self.depth_sensor = QLabel("Depth Sensor", self)
+		self.depth_sensor = QLabel("Depth Sensor: ", self)
 		self.depth_sensor.setGeometry(120, 350, 335, 200)
 		self.depth_sensor.move(970, 380)
 		self.depth_sensor.setAlignment(Qt.AlignLeft)
@@ -120,7 +120,7 @@ class Window(QMainWindow):
         #notepad label styling
 		self.notepad_label = QLabel("NOTEPAD", self)
 		self.notepad_label.setGeometry(75, 375, 450, 120)
-		self.notepad_label.setStyleSheet("border: 4px solid white; border-radius: 10; background: #5D7090; color: white")
+		self.notepad_label.setStyleSheet("border: 4px solid white; border-radius: 10; background: #5D7090; color: #F1F6FD")
 		self.notepad_label.setFont(QFont('Time', 15))
 		self.notepad_label.setAlignment(Qt.AlignCenter)
 		self.notepad_label.move(100, 90)
