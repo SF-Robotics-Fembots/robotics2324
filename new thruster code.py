@@ -19,9 +19,7 @@ def main():
 	shield.frequency = 100
 
 	thrusterChannel = array[shield.channels[0], shield.channels[1], shield.channels[2], shield.channels[3], shield.channels[4], shield.channels[5], shield.channels[6]]
-	thrusterChannel1 = shield.channel[1]
-	thrusterChannel1.duty_cycle = 0x2666
-
+	
 	throttle_in = 1480
 	throttlePW = int(throttle_in/10000*65536)
 	thrusterChannel.duty_cycle = throttlePW
