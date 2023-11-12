@@ -1,6 +1,6 @@
 import time
 import typing
-import PyQt5
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import *
 from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
@@ -8,6 +8,9 @@ import os
 import sys
 import cv2 #one of the most important libraries we have
 from PyQt5.QtWidgets import QWidget
+import numpy as np
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
 
 #initialize the cameras?
 video1 = cv2.VideoCapture("http://192.168.1.99:8080/stream")
@@ -16,11 +19,7 @@ video1 = cv2.VideoCapture("http://192.168.1.99:8080/stream")
 
 #main window class
 class MainWindow(QMainWindow):
-    
-    #self constructor
     def __init__(self):
-        super().__init__()
-
         #setting geometry
         self.setGeometry(100, 100, 800, 600)
 
@@ -195,6 +194,8 @@ class MainWindow(QMainWindow):
         #setting text to the error message
         error.showMessage(msg)
 
+
+
 #driver code
 if __name__ == "__main__" :
 
@@ -203,6 +204,9 @@ if __name__ == "__main__" :
 
     #create the instance of our window
     window = MainWindow()
+
+    #show the window
+    window.show()
 
     #start the app
     sys.exit(app.exec())
