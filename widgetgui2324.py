@@ -41,60 +41,21 @@ class Window(QMainWindow):
 		self.camera_label.setAlignment(Qt.AlignCenter)
 		self.camera_label.move(1380, 90)
 		
-        #pause camera button and styling
-		pause_cameras = QPushButton("Pause Cameras", self)
-		pause_cameras.setGeometry(125, 350, 300, 100)
-		pause_cameras.move(1450, 230)
-		pause_cameras.setStyleSheet("border-radius :25; border: 3px solid midnightblue; color: midnightblue")
-		
 	    #front camera button and styling
-		front_button = QPushButton("Show Front", self)
-		front_button.setGeometry(125, 350, 300, 100)
-		front_button.move (1450, 345)
+		front_button = QPushButton("Front", self)
+		front_button.setGeometry(125, 350, 400, 170)
+		front_button.move (1400, 220)
 		front_button.setStyleSheet("border-radius: 25; border: 3px solid midnightblue; color: midnightblue")
+		front_button.setFont(QFont('Time', 11))
+
 		
+
 	    #pilot inversion camera button and styling
-		inverse_button = QPushButton("Pilot Inversion", self)
-		inverse_button.setGeometry(125, 350, 300, 100)
-		inverse_button.move (1450, 460)
+		inverse_button = QPushButton("Inversion", self)
+		inverse_button.setGeometry(125, 350, 400, 170)
+		inverse_button.move (1400, 400)
 		inverse_button.setStyleSheet("border-radius: 25; border: 3px solid midnightblue; color: midnightblue")
-
-
-        #nav cam button and styling
-		nav_cam = QPushButton("nav cam", self)
-		nav_cam.setGeometry(125, 350, 150, 65)
-		nav_cam.move(1450, 600)
-		nav_cam.setStyleSheet("border-radius : 10; border: 2px solid midnightblue; color: midnightblue")
-
-        #camera 1 button and styling
-		cam1 = QPushButton("camera one", self)
-		cam1.setGeometry(125, 350, 150, 65)
-		cam1.move(1605, 600)
-		cam1.setStyleSheet("border-radius : 10; border: 2px solid midnightblue; color: midnightblue")
-
-        #camera 2 button and styling
-		cam2 = QPushButton("camera two", self)
-		cam2.setGeometry(125, 350, 150, 65)
-		cam2.move(1450, 680)
-		cam2.setStyleSheet("border-radius : 10; border: 2px solid midnightblue; color: midnightblue")
-
-        #camera 3 button and styling
-		cam3 = QPushButton("camera three", self)
-		cam3.setGeometry(125, 350, 150, 65)
-		cam3.move(1605, 680)
-		cam3.setStyleSheet("border-radius : 10; border: 2px solid midnightblue; color: midnightblue")
-		
-        #camera 4 button and styling
-		cam4 = QPushButton("camera four", self)
-		cam4.setGeometry(125, 350, 150, 65)
-		cam4.move(1450, 760)
-		cam4.setStyleSheet("border-radius : 10; border: 2px solid midnightblue; color: midnightblue")
-
-        #camera 5 button and styling
-		cam5 = QPushButton("camera five", self)
-		cam5.setGeometry(125, 350, 150, 65)
-		cam5.move(1605, 760)
-		cam5.setStyleSheet("border-radius : 10; border: 2px solid midnightblue; color: midnightblue")
+		inverse_button.setFont(QFont('Time', 11))
 
         #humidity sensor and styling
 		self.humidity_sensor = QLabel("Humidity Sensor: ", self)
