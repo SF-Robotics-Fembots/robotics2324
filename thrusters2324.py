@@ -274,15 +274,16 @@ def main(ip_server):
 			# each item in the list represents if the output for each thruster is pos. or neg.
 			# ex: in xDirArray, the first element in index 0 (-1) expects that T1 would have a neg. output given a direction
 			# WORKING DIRECTIONS
-			
 			directionRecieved = ((clientSocket1.recv(1024)).decode())
 			#direction data is transferred to socket, then to thrusters, which will tell the thrusters what to do
-			directionRecieved = directionRecieved[0]
+            directionRecieved = directionRecieved[0]
 			#print("direction" + directionRecieved)
-			if (directionRecieved == "a"):
+		    if (directionRecieved == "a"):
 			    direction = 1
-			elif (directionRecieved == "b"):
-			    direction = -1
+			elif (directionRecieved == "a"):
+			    direction = 1
+            elif (directionRecieved == "b"):
+	            direction = -1
 				#a is forwards, b is backwards
 			else:
 			    direction = direction
@@ -422,7 +423,7 @@ def main(ip_server):
 			#power calculations
 	#    	time.sleep(1)
 
-		except ValueError:
+	    except ValueError:
 			print("Error")
 			check = (clientSocket.recv(1024)).decode()
 			print("check: " + check)
