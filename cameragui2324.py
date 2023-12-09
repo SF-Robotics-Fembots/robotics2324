@@ -1,212 +1,99 @@
-import time
-import typing
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import *
-from PyQt5.QtMultimedia import *
-from PyQt5.QtMultimediaWidgets import *
-import os
+
 import sys
-import cv2 #one of the most important libraries we have
-from PyQt5.QtWidgets import QWidget
-import numpy as np
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+import cv2
 
-#initialize the cameras?
-video1 = cv2.VideoCapture("http://192.168.1.99:8080/stream")
+#create a holder for the url
 
 
-
-#main window class
-class MainWindow(QMainWindow):
+class MainWindow(QWidget):
     def __init__(self):
-        #setting geometry
-        self.setGeometry(100, 100, 800, 600)
+        super(MainWindow, self).__init__()
 
-        #set the style sheet
-        self.setStyleSheet("background : lightgray;")
+        self.setStyleSheet("background-color: grey;")
 
-        #get the available cameras
-        self.available_cameras = [video1]
-        #self.available_cameras = QCameraInfo.availableCameras()
-        #self.available_cameras.append(video1)
+        self.VBL = QVBoxLayout()
 
-        print(self.available_cameras)
-
-        #if no camera found
-        if not self.available_cameras:
-            #exit the code
-            sys.exit() #does this just mean exit system? (it exits Python system)
-
-        #create a status bar
-        self.status = QStatusBar()
-
-        #set the stylesheet to the status bar
-        self.status.setStyleSheet("background : lightgrey;")
-
-        #add the status bar to the main window
-        self.setStatusBar(self.status)
-
-        #path to save
-        self.save_path = ""
-
-        #create a camera viewfinder object
-        self.viewfinder = QCameraViewfinder()
-
-        #show the viewfinder
-        self.viewfinder.show()
-
-        #make the central widget of main window
-        self.setCentralWidget(self.viewfinder)
-
-        #set default camera
-        self.select_camera(0) #this sets it to webcam
-
-        #create a tool bar
-        toolbar = QToolBar("camera tool bar")
-
-        #add tool bar to mian window
-        self.addToolBar(toolbar)
-
-        #create a photo action (take pic)
-        clickaction = QAction("click photo", self)
-
-        #adding status tip to the photo action
-        clickaction.setStatusTip("this will capture picture")
-
-        #adding tool tip
-        clickaction.setToolTip("capture picture")
-
+        self.feed = QLabel(self)
+        self.feed.setToolTip("feedlabel")
+        self.feed.setGeometry(125, 350, 400, 170)
         
-        #adding action baybeeee
-        #calling take_photo method
-        clickaction.triggered.connect(self.click_photo)
+        self.VBL.addWidget(self.feed)
 
-        #adding this to the tool bar
-        toolbar.addAction(clickaction)
-
-
-        #creating a combo box for selecting camera
-        camera_selector = QComboBox()
-
-        #adding status tip to it
-        camera_selector.setStatusTip("choose camera to take pictures")
-
-        #adding tooltip to it
-        camera_selector.setToolTip("select camera")
-        camera_selector.setToolTipDuration(2500)
-
-        #adding items to the combo box
-        camera_selector.addItems([camera.description()
-                                  for camera in self.available_cameras])
+        #self.FeedLabel2 = QLabel()
+        #self.FeedLabel2.setToolTip("feedlabel2")
+       # self.VBL.addWidget(self.FeedLabel2)
         
-        #adding action to the combo box
-        #calling the select camera method
-        camera_selector.currentIndexChanged.connect(self.select_camera)
 
-        #adding to tool bar
-        toolbar.addWidget(camera_selector)
+        self.CancelBTN = QPushButton("cancel")
+        self.CancelBTN.clicked.connect(self.CancelFeed)
+        self.VBL.addWidget(self.CancelBTN)
 
-        #setting tool bar stylesheet
-        toolbar.setStyleSheet("background : lightgrey;")
+       # self.Worker = Worker() #create a worker cam object
+        self.Worker1 = Worker1()
+        #self.Worker1.move(1400, 220) 
 
-
-        #setting window title
-        self.setWindowTitle("pyqt5 cam")
-
-        #show the main window
-        self.show()
-
-    #method to select camera
-    def select_camera(self, i):
-
-        #getting the selected camera
-        self.camera = QCamera(self.available_cameras[i])
-
-        #setting the view finder to the camera
-        self.camera.setViewfinder(self.viewfinder)
-
-        #setting capture mode to the camera
-        self.camera.setCaptureMode(QCamera.CaptureStillImage)
-
-        #show the alert for any error
-        self.camera.error.connect(lambda: self.alert(self.camera.errorString()))
-
-        #start the camera
-        self.camera.start()
-
-        #creating an image capture object
-        self.capture = QCameraImageCapture(self.camera)
-
-        #showing alert if error occur
-        self.capture.error.connect(lambda error_msg, error, msg: self.alert(msg))
-
-        #when image captured showing message
-        self.capture.imageCaptured.connect(lambda d, 
-                                           i: self.status.showMessage("image captured : "
-                                                                      + str(self.save_seq)))
+       # self.Worker.start()
+        #self.Worker.ImageUpdate.connect(self.ImageUpdateSlot)
         
-        #getting current camera name
-        self.current_camera_name = self.available_cameras[i].description()
 
-        #initial save sequence
-        self.save_seq = 0
+        self.Worker1.start()
+        self.Worker1.ImageUpdate.connect(self.ImageUpdateSlot)
+        self.setLayout(self.VBL)
 
-    #method to take photo
-    def click_photo(self):
-
-        #time stamp
-        timestamp = time.strftime("%d-%b-%Y-%H_%M_%S")
-
-        #capture the image and save it on the save path
-        self.capture.capture(os.path.join(self.save_path,
-                                          "%s-%04d-%s.jpg" % (
-            self.current_camera_name,
-            self.save_seq,
-            timestamp 
-            )))
+    
+    def ImageUpdateSlot(self, Image):
+        self.feed.setPixmap(QPixmap.fromImage(Image))
         
-        #increment the sequence
-        self.save_seq += 1
 
-    #change folder method
-    def change_folder(self):
-        
-        #open the dialog to select path
-        path = QFileDialog.getExistingDirectory(self,
-                                                "picture location", "")
-        
-        #if path is selected
-        if path: 
+    def CancelFeed(self):
+        #self.Worker.stop()
+        self.Worker1.stop()
 
-            #update the path
-            self.save_path = path
-            
-            #update the sequence
-            self.save_seq = 0
+class Worker(QThread):
+    ImageUpdate = pyqtSignal(QImage)
+    def run(self):
+        self.ThreadActive = True
+        capture = cv2.VideoCapture("http://192.168.1.99:8080/stream")
+        while self.ThreadActive:
+            ret, frame = capture.read()
+            if ret:
+                Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                FlippedImage = cv2.flip(Image, 1) #mirrors
+                ConvertToQtFormat = QImage(FlippedImage.data, FlippedImage.shape[1],
+                                           FlippedImage.shape[0], QImage.Format_RGB888)
+                Pic = ConvertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+                self.ImageUpdate.emit(Pic)
+                #capture.release()
+    def stop(self):
+        self.ThreadActive = False
+        self.quit()
 
-    #method for alerts
-    def alert(self, msg):
+class Worker1(QThread):
+    ImageUpdate = pyqtSignal(QImage)
+    def run(self):
+        self.ThreadActive = True
+        capture = cv2.VideoCapture(0)
+        while self.ThreadActive:
+            ret, frame = capture.read()
+            if ret:
+                Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                FlippedImage = cv2.flip(Image, 1) #mirrors
+                ConvertToQtFormat = QImage(FlippedImage.data, FlippedImage.shape[1],
+                                           FlippedImage.shape[0], QImage.Format_RGB888)
+                Pic = ConvertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+                self.ImageUpdate.emit(Pic)
+                #capture.release()
+    def stop(self):
+        self.ThreadActive = False
+        self.quit()
 
-        #error message
-        error = QErrorMessage(self)
+    
 
-        #setting text to the error message
-        error.showMessage(msg)
-
-
-
-#driver code
-if __name__ == "__main__" :
-
-    #create pyqt5 app
+if __name__ == "__main__":
     app = QApplication(sys.argv)
-
-    #create the instance of our window
-    window = MainWindow()
-
-    #show the window
-    window.show()
-
-    #start the app
+    root = MainWindow()
+    root.show()
     sys.exit(app.exec())
