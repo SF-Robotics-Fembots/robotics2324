@@ -16,18 +16,20 @@ class MainWindow(QWidget):
         self.VBL = QGridLayout()
 
         self.FeedLabel = QLabel()
+        self.FeedLabel.move(3000, 600)
         self.FeedLabel.setToolTip("feedlabel")
+
         self.VBL.addWidget(self.FeedLabel)
 
         self.CancelBTN = QPushButton("cancel")
         self.CancelBTN.clicked.connect(self.CancelFeed)
         self.VBL.addWidget(self.CancelBTN)
 
-        self.Worker = Worker() #create a worker cam object
+        #self.Worker = Worker() #create a worker cam object
         self.Worker1 = Worker1()
 
-        self.Worker.start()
-        self.Worker.ImageUpdate.connect(self.ImageUpdateSlot)
+        #self.Worker.start()
+        #self.Worker.ImageUpdate.connect(self.ImageUpdateSlot)
         
 
         self.Worker1.start()
@@ -36,11 +38,13 @@ class MainWindow(QWidget):
     
     def ImageUpdateSlot(self, Image):
         self.FeedLabel.setPixmap(QPixmap.fromImage(Image))
+        self.FeedLabel.setPixmap.move(568, 384)
+    
 
     def CancelFeed(self):
         self.Worker.stop()
         self.Worker1.stop()
-
+'''
 class Worker(QThread):
     ImageUpdate = pyqtSignal(QImage)
     def run(self):
@@ -59,7 +63,7 @@ class Worker(QThread):
     def stop(self):
         self.ThreadActive = False
         self.quit()
-
+'''
 class Worker1(QThread):
     ImageUpdate = pyqtSignal(QImage)
     def run(self):
