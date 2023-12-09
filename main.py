@@ -24,7 +24,7 @@ shield.frequency = 100
 
 #global ip variable setup
 global ip_server
-ip_server = "192.168.1.100"
+ip_server = "192.168.1.107"
     
 thrusterChannel1 = shield.channels[0]
 thrusterChannel2 = shield.channels[1]
