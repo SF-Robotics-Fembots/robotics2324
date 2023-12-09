@@ -11,7 +11,9 @@ import cv2
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
+        self.setGeometry(100, 100, 800, 600)
 
+        self.VBL = QGridLayout()
 
         self.FeedLabel = QLabel()
         self.FeedLabel.setToolTip("feedlabel")
