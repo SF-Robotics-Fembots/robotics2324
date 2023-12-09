@@ -17,6 +17,7 @@ class MainWindow(QWidget):
 
         self.FeedLabel = QLabel()
         self.FeedLabel.setToolTip("feedlabel")
+        self.FeedLabel.setGeometry(125, 125, 500, 600)
         
 
         self.CancelBTN = QPushButton("cancel")

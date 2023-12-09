@@ -14,11 +14,10 @@ class MainWindow(QWidget):
 
         self.setStyleSheet("background-color: grey;")
 
-        self.VBL = QVBoxLayout()
+        self.VBL = QGridLayout()
 
         self.feed = QLabel(self)
         self.feed.setToolTip("feedlabel")
-        self.feed.setGeometry(125, 350, 400, 170)
         
         self.VBL.addWidget(self.feed)
 
@@ -33,6 +32,8 @@ class MainWindow(QWidget):
 
        # self.Worker = Worker() #create a worker cam object
         self.Worker1 = Worker1()
+        #self.newLabel = QLabel(self.Worker1)
+        #self.newLabel.move(1400, 75)
         #self.Worker1.move(1400, 220) 
 
        # self.Worker.start()
