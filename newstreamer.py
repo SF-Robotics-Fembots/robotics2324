@@ -6,38 +6,68 @@ from PyQt5.QtCore import *
 import cv2
 
 #create a holder for the url
+#not working
 
 
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.setGeometry(100, 100, 800, 600)
 
-        self.VBL = QGridLayout()
+        self.setStyleSheet("background-color: grey;")
 
-        self.FeedLabel = QLabel()
-        self.FeedLabel.move(3000, 600)
-        self.FeedLabel.setToolTip("feedlabel")
+        #self.VBL = QGridLayout()
+        #self.VBL.move(500, 600)
 
-        self.VBL.addWidget(self.FeedLabel)
+        self.vlayout = QVBoxLayout()
+        self.hlayout = QHBoxLayout()
+        self.widget = QWidget()
+        self.widget.setLayout(hlayout)
 
-        self.CancelBTN = QPushButton("cancel")
-        self.CancelBTN.clicked.connect(self.CancelFeed)
+        self.a1 = QLabel('label1', self)
+        self.a2 = QLabel('label2', self)
+        self.hlayout.addWidget(a1)
+        self.hlayout.addWidget(a2)
+        self.hlayout.addStretch(2)
+        self.vlayout.addLayout(hlayout)
+        self.vlayout.addStretch(1)
+        self.show()
 
-        #self.Worker = Worker() #create a worker cam object
-        self.Worker1 = Worker1()
+        #self.feed = QLabel(self)
+        #self.feed.setToolTip("feedlabel")
+        
+        #self.VBL.addWidget(self.feed)
 
-        #self.Worker.start()
+        #self.FeedLabel2 = QLabel()
+        #self.FeedLabel2.setToolTip("feedlabel2")
+       # self.VBL.addWidget(self.FeedLabel2)
+        
+
+        #self.CancelBTN = QPushButton("cancel")
+        #self.CancelBTN.clicked.connect(self.CancelFeed)
+        #self.VBL.addWidget(self.CancelBTN)
+
+       # self.Worker = Worker() #create a worker cam object
+        #self.Worker1 = Worker1()
+        #self.newLabel = QLabel(self.Worker1)
+        #self.newLabel.move(1400, 75)
+        #self.Worker1.move(1400, 220) 
+
+       # self.Worker.start()
         #self.Worker.ImageUpdate.connect(self.ImageUpdateSlot)
         
+
+       # self.Worker1.start()
+       # self.Worker1.ImageUpdate.connect(self.ImageUpdateSlot)
+       # self.setLayout(self.VBL)
+
     
     def ImageUpdateSlot(self, Image):
-        self.FeedLabel.setPixmap(QPixmap.fromImage(Image))
-        self.FeedLabel.setPixmap.move(568, 384)
-    
+        self.feed.setPixmap(QPixmap.fromImage(Image))
+        
 
     def CancelFeed(self):
-        self.Worker.stop()
+        #self.Worker.stop()
+        self.Worker1.stop()
 
 class Worker(QThread):
     ImageUpdate = pyqtSignal(QImage)
@@ -77,6 +107,7 @@ class Worker1(QThread):
         self.ThreadActive = False
         self.quit()
 
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
