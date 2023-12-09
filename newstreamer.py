@@ -16,26 +16,49 @@ class MainWindow(QWidget):
         self.VBL = QGridLayout()
 
         self.FeedLabel = QLabel()
+        self.FeedLabel.move(3000, 600)
         self.FeedLabel.setToolTip("feedlabel")
-        self.FeedLabel.setGeometry(125, 125, 500, 600)
-        
+
+        self.VBL.addWidget(self.FeedLabel)
 
         self.CancelBTN = QPushButton("cancel")
         self.CancelBTN.clicked.connect(self.CancelFeed)
 
-        self.Worker = Worker() #create a worker cam object
+        #self.Worker = Worker() #create a worker cam object
+        self.Worker1 = Worker1()
 
-        self.Worker.start()
-        self.Worker.ImageUpdate.connect(self.ImageUpdateSlot)
+        #self.Worker.start()
+        #self.Worker.ImageUpdate.connect(self.ImageUpdateSlot)
         
     
     def ImageUpdateSlot(self, Image):
         self.FeedLabel.setPixmap(QPixmap.fromImage(Image))
+        self.FeedLabel.setPixmap.move(568, 384)
+    
 
     def CancelFeed(self):
         self.Worker.stop()
 
 class Worker(QThread):
+    ImageUpdate = pyqtSignal(QImage)
+    def run(self):
+        self.ThreadActive = True
+        capture = cv2.VideoCapture("http://192.168.1.99:8080/stream")
+        while self.ThreadActive:
+            ret, frame = capture.read()
+            if ret:
+                Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                FlippedImage = cv2.flip(Image, 1) #mirrors
+                ConvertToQtFormat = QImage(FlippedImage.data, FlippedImage.shape[1],
+                                           FlippedImage.shape[0], QImage.Format_RGB888)
+                Pic = ConvertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+                self.ImageUpdate.emit(Pic)
+                #capture.release()
+    def stop(self):
+        self.ThreadActive = False
+        self.quit()
+
+class Worker1(QThread):
     ImageUpdate = pyqtSignal(QImage)
     def run(self):
         self.ThreadActive = True
