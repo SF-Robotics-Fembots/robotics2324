@@ -276,7 +276,7 @@ def main(ip_server):
 			# WORKING DIRECTIONS
 			directionRecieved = ((clientSocket1.recv(1024)).decode())
 			#direction data is transferred to socket, then to thrusters, which will tell the thrusters what to do
-            directionRecieved = directionRecieved[0]
+            #directionRecieved = directionRecieved[0]
 			#print("direction" + directionRecieved)
 		    if (directionRecieved == "a"):
 			    direction = 1

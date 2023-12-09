@@ -11,7 +11,7 @@ import pilotInverseServer
 #import fryServer
 
 global ip_server
-ip_server = "192.168.1.100"
+ip_server = "192.168.1.107"
 
 joystickCode = threading.Thread(target=joystickServer.main, args = (ip_server,))
 #lightCode = threading.Thread(target=lightServer.main, args = ())
