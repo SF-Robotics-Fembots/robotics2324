@@ -7,6 +7,7 @@ from adafruit_servokit import ServoKit
 import time
 import threading
 import socket
+import gripperbottomside
 #import servo
 import thrusters2324
 #import thrustersmod
@@ -95,6 +96,7 @@ thrusterChannel6.duty_cycle = throttlePW
 time.sleep(0)
 
 thrusterCode = threading.Thread(target=thrusters2324.main, args = (ip_server,))
+gripperbottomsideCode = threading.Thread(target = gripperbottomside.main, args = (ip_server,))
 #servoCode = threading.Thread(target=servo.main, args = (ip_server,))
 #saltWaterCode = threading.Thread(target=saltWater.main, args = (ip_server,))
 #lazersCode = threading.Thread(target=lazers.main, args= (ip_server,))
