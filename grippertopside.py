@@ -55,8 +55,6 @@ def main():
     
     (clientconnected, clientaddress) = serversocket.accept()
     while True:
-
-
         
         message = "hi"
 
