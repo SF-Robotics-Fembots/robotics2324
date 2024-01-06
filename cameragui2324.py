@@ -8,18 +8,33 @@ import cv2
 #create a holder for the url
 
 
-class MainWindow(QWidget):
+class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
         self.setStyleSheet("background-color: grey;")
+        self.setGeometry(400, 270, 1900, 900)
 
-        self.VBL = QGridLayout()
+        self.widget = QWidget()
+        VBL = QVBoxLayout()
+        self.widget.setLayout(VBL)
+        self.setCentralWidget(self.widget)
 
         self.feed = QLabel(self)
         self.feed.setToolTip("feedlabel")
-        
-        self.VBL.addWidget(self.feed)
+
+        self.camera_label = QLabel("CAMERAS", self)
+        self.camera_label.setGeometry(75, 375, 450, 120)
+        self.camera_label.setStyleSheet("border: 4px solid white; border-radius: 10; background: #5D7090; color: #F1F6FD")
+        self.camera_label.setFont(QFont('Time', 15))
+       # self.camera_label.setAlignment(Qt.AlignCenter)
+       # self.camera_label.move(1380, 90)
+        #self.VBL.addWidget(self.feed)
+
+        #VBL.addWidget(self.Worker)
+        #VBL.addWidget(self.Worker1)
+        VBL.addWidget(self.camera_label)
+        VBL.addWidget(self.CancelBTN)
 
         #self.FeedLabel2 = QLabel()
         #self.FeedLabel2.setToolTip("feedlabel2")
@@ -30,14 +45,14 @@ class MainWindow(QWidget):
         self.CancelBTN.clicked.connect(self.CancelFeed)
         self.VBL.addWidget(self.CancelBTN)
 
-       # self.Worker = Worker() #create a worker cam object
+        self.Worker = Worker() #create a worker cam object
         self.Worker1 = Worker1()
         #self.newLabel = QLabel(self.Worker1)
         #self.newLabel.move(1400, 75)
         #self.Worker1.move(1400, 220) 
 
-       # self.Worker.start()
-        #self.Worker.ImageUpdate.connect(self.ImageUpdateSlot)
+        self.Worker.start()
+        self.Worker.ImageUpdate.connect(self.ImageUpdateSlot)
         
 
         self.Worker1.start()
@@ -50,7 +65,7 @@ class MainWindow(QWidget):
         
 
     def CancelFeed(self):
-        #self.Worker.stop()
+        self.Worker.stop()
         self.Worker1.stop()
 
 class Worker(QThread):
