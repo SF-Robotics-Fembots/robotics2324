@@ -1,11 +1,11 @@
-#import time, RPi.GPIO as GPIO
-import socket, time
+import time, RPi.GPIO as GPIO
+import socket
 
 #setup for the board and the pins
-#GPIO.setmode(GPIO.BCM) #set this to the gpio pins
+GPIO.setmode(GPIO.BCM) #set this to the gpio pins
 #both GPIO 23 and 24 for the outputs
-#GPIO.setup(23, GPIO.OUT) #actually pin 16
-#GPIO.setup(24, GPIO.OUT) #actually pin 18
+GPIO.setup(23, GPIO.OUT) #actually pin 16
+GPIO.setup(24, GPIO.OUT) #actually pin 18
 
 #set up the socket connection ugh
 #bottomside is client
@@ -23,9 +23,13 @@ def main():
         data = clientsocket.recv(1024)
         data = data.decode()
         print(data)
+        if data == "a":
+            GPIO.output(23, GPIO.HIGH) #turns the gripper on
+        elif data == "b":
+            GPIO.output(23, GPIO.HIGH)
 
         time.sleep(1.5)
-        break
+        #break
     print("socket closing!")
     clientsocket.close()
         

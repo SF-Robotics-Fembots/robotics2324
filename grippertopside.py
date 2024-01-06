@@ -46,6 +46,12 @@ def main():
     while 1:
         x = mcp.get_gpio_value(2)
         print(x)
+        if x:
+            message = "a"
+            break
+        if not x:
+            message = "b"
+            break
 
     #set up a server socket
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -55,8 +61,6 @@ def main():
     
     (clientconnected, clientaddress) = serversocket.accept()
     while True:
-        
-        message = "hi"
 
         data  = message.encode()
         clientconnected.send(data)
