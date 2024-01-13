@@ -32,9 +32,9 @@ mcp.configure_spi_timing(chip_select_to_data_delay=0,
 
 #port for the socket
 port = 40000
-ip_server = "192.168.1.100"
+ip_server = "127.0.0.1"
 
-def main(ip_server):
+def main():
 
     #set up a server socket
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -56,9 +56,9 @@ def main(ip_server):
     while True:
         x = mcp.get_gpio_value(2)
         print(x)
-        if x == True:
-            message = "a"
         if x == False:
+            message = "a"
+        if x == True:
             message = "b"
 
         data  = message.encode()
