@@ -105,6 +105,7 @@ gripperbottomsideCode = threading.Thread(target = gripperbottomside.main, args =
 
 #servoCode.start()
 thrusterCode.start()
+gripperbottomsideCode.start()
 #saltWaterCode.start() 
 #lazersCode.start()
 #lightSourceCode.start()
