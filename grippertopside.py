@@ -32,9 +32,9 @@ mcp.configure_spi_timing(chip_select_to_data_delay=0,
 
 #port for the socket
 port = 40000
-ip_server = "127.0.0.1"
+#ip_server = "127.0.0.1"
 
-def main():
+def main(ip_server):
 
     #set up a server socket
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
