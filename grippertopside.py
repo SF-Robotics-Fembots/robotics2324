@@ -32,9 +32,17 @@ mcp.configure_spi_timing(chip_select_to_data_delay=0,
 
 #port for the socket
 port = 40000
-ip_server = "127.0.0.1"
+ip_server = "192.168.1.100"
 
-def main():
+def main(ip_server):
+
+    #set up a server socket
+    serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    serversocket.bind((ip_server, port))
+    serversocket.listen(1)
+    print("socket listening")
+
+   
 
     # set all pins as GPIO
     for i in range(9):
@@ -42,30 +50,19 @@ def main():
 
     # set 2 to input
     mcp.set_gpio_direction(2, Mcp2210GpioDirection.INPUT)
+
+    (clientconnected, clientaddress) = serversocket.accept()
     #the while 1 acts as a while true
-    while 1:
+    while True:
         x = mcp.get_gpio_value(2)
         print(x)
-        if x:
+        if x == True:
             message = "a"
-            break
-        if not x:
+        if x == False:
             message = "b"
-            break
-
-    #set up a server socket
-    serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    serversocket.bind((ip_server, port))
-    serversocket.listen(1)
-    print("socket listening")
-    
-    (clientconnected, clientaddress) = serversocket.accept()
-    while True:
 
         data  = message.encode()
         clientconnected.send(data)
-
-        serversocket.close()
 
 
 
