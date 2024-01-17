@@ -34,17 +34,18 @@ def main(ip_server):
 	kit = ServoKit(channels=16)
 	#servo kit for adafruit
 	#channels: models for interprocess communication and synchronization via message passing
-	shield.frequency = 100
+	shield.frequency = 96
+	#changed the shield frequency (pwm) to 96 Hz
 	#100 in Hz, meaning shield runs at 100 times a second
 	#100 Hz = cycle time for PWM signal
 	#meaning robot speed can change 100 times a second
 
 	thrusterChannel1 = shield.channels[0]
-	thrusterChannel2 = shield.channels[1]
+	thrusterChannel2 = shield.channels[15]
 	thrusterChannel3 = shield.channels[2]
-	thrusterChannel4 = shield.channels[3]
-	thrusterChannel5 = shield.channels[4]
-	thrusterChannel6 = shield.channels[5]
+	thrusterChannel4 = shield.channels[13] #changed from 3, 4, 5
+	thrusterChannel5 = shield.channels[1]
+	thrusterChannel6 = shield.channels[14]
 	thrusterChannel1.duty_cycle = 0x2666
 	#duty cycle: ration of PW to range (tells power of thrusters/how fast thrusters go)
 	#NOTE: cycle time for PWM doesnt change, but duty cycle does
