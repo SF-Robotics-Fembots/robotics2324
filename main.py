@@ -7,7 +7,7 @@ from adafruit_servokit import ServoKit
 import time
 import threading
 import socket
-import gripperbottomside
+#import gripperbottomside
 #import servo
 import thrusters2324
 #import thrustersmod
@@ -25,7 +25,7 @@ shield.frequency = 100
 
 #global ip variable setup
 global ip_server
-ip_server = "192.168.1.107"
+ip_server = "192.168.1.100"
     
 thrusterChannel1 = shield.channels[0]
 thrusterChannel2 = shield.channels[1]
@@ -96,7 +96,7 @@ thrusterChannel6.duty_cycle = throttlePW
 time.sleep(0)
 
 thrusterCode = threading.Thread(target=thrusters2324.main, args = (ip_server,))
-gripperbottomsideCode = threading.Thread(target = gripperbottomside.main, args = (ip_server,))
+#gripperbottomsideCode = threading.Thread(target = gripperbottomside.main, args = (ip_server,))
 #servoCode = threading.Thread(target=servo.main, args = (ip_server,))
 #saltWaterCode = threading.Thread(target=saltWater.main, args = (ip_server,))
 #lazersCode = threading.Thread(target=lazers.main, args= (ip_server,))
@@ -105,7 +105,7 @@ gripperbottomsideCode = threading.Thread(target = gripperbottomside.main, args =
 
 #servoCode.start()
 thrusterCode.start()
-gripperbottomsideCode.start()
+#gripperbottomsideCode.start()
 #saltWaterCode.start() 
 #lazersCode.start()
 #lightSourceCode.start()
