@@ -287,8 +287,10 @@ def main(ip_server):
 				direction = direction
 			print(directionRecieved)
 			print(direction)
-			xDirArray = [-1*direction, 1*direction, -1*direction, 1*direction]
-			yDirArray = [1*direction, 1*direction, -1*direction, -1*direction]
+			#xDirArray = [-1*direction, 1*direction, -1*direction, 1*direction]
+			#yDirArray = [1*direction, 1*direction, -1*direction, -1*direction]
+			xDirArray = [-1*direction, 1*direction, 1*direction, -1*direction]
+			yDirArray = [1*direction, 1*direction, 1*direction, 1*direction]
 			rDirArray = [-1, 1, 1, -1]
 			vDirArray = [-1, -1]
 			#this section is basically inverse pilot
