@@ -1,7 +1,7 @@
 import time, RPi.GPIO as GPIO
 import socket
 
-GPIO.cleanup()
+#GPIO.cleanup()
 #setup for the board and the pins
 GPIO.setmode(GPIO.BCM) #set this to the gpio pins
 #both GPIO 23 and 24 for the outputs
@@ -22,21 +22,22 @@ def main():
     #print("Connecting 2")
     clientsocket.connect((server_ip, port))
     #print("connecting 3")
+    print("client connected!!")
     while True: 
-        print("client connected!")
+        #print("client connected!")
         data = clientsocket.recv(1024)
         data = data.decode()
-        print(data)
+        #print(data)
         if data == "a":
             GPIO.output(26, GPIO.HIGH) #turns the gripper on
             GPIO.output(13, GPIO.HIGH)
-            print(data)
+            print("gripper on")
             time.sleep(1.5)
         elif data == "b":
-            GPIO.output(26, GPIO.HIGH)
-            GPIO.output(13, GPIO.HIGH)
-            print(data)
-            time.sleep(1)
+            GPIO.output(26, GPIO.LOW)
+            GPIO.output(13, GPIO.LOW)
+            print("gripper off")
+            time.sleep(1.5)
     
     GPIO.cleanup()
         
