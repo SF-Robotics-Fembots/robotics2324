@@ -4,9 +4,9 @@ import socket
 #GPIO.cleanup()
 #setup for the board and the pins
 GPIO.setmode(GPIO.BCM) #set this to the gpio pins
-#both GPIO 23 and 24 for the outputs
-GPIO.setup(26, GPIO.OUT) #actually pin 16
-GPIO.setup(13, GPIO.OUT) #actually pin 18
+#both GPIO 20 and 21 for the outputs
+GPIO.setup(20, GPIO.OUT) #actually pin 16
+GPIO.setup(21, GPIO.OUT) #actually pin 18
 
 #set up the socket connection ugh
 #bottomside is client
@@ -29,13 +29,13 @@ def main():
         data = data.decode()
         #print(data)
         if data == "a":
-            GPIO.output(26, GPIO.HIGH) #turns the gripper on
-            GPIO.output(13, GPIO.HIGH)
+            GPIO.output(20, GPIO.HIGH) #turns the gripper on
+            GPIO.output(21, GPIO.HIGH)
             print("gripper on")
             time.sleep(1.5)
         elif data == "b":
-            GPIO.output(26, GPIO.LOW)
-            GPIO.output(13, GPIO.LOW)
+            GPIO.output(20, GPIO.LOW)
+            GPIO.output(21, GPIO.LOW)
             print("gripper off")
             time.sleep(1.5)
     
