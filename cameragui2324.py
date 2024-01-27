@@ -115,7 +115,7 @@ class MainWindow(QMainWindow):
         self.CaptureCam_4 = CaptureCam(self.camera_4)
         self.CaptureCam_4.ImageUpdate.connect(lambda image: self.ShowCamera4(image))
 
-        self.CaptureCam_5 = CaptureCam(self.camera_2)
+        self.CaptureCam_5 = CaptureCam(self.camera_5)
         self.CaptureCam_5.ImageUpdate.connect(lambda image: self.ShowCamera5(image))
 
         self.CaptureCam_1.start()
