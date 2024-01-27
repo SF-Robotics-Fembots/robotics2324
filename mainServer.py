@@ -12,7 +12,7 @@ import pilotInverseServer
 #import fryServer
 
 global ip_server
-ip_server = "192.168.1.107"
+ip_server = "192.168.1.100"
 
 joystickCode = threading.Thread(target=joystickServer.main, args = (ip_server,))
 #lightCode = threading.Thread(target=lightServer.main, args = ())
@@ -25,6 +25,7 @@ grippertopsideCode = threading.Thread(target=grippertopside.main, args = (ip_ser
 
 
 joystickCode.start()
+grippertopsideCode.start()
 #lightCode.start()
 #hatCode.start()
 #saltWaterCode.start()

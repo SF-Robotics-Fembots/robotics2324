@@ -25,7 +25,7 @@ shield.frequency = 100
 
 #global ip variable setup
 global ip_server
-ip_server = "192.168.1.107"
+ip_server = "192.168.1.100"
     
 thrusterChannel1 = shield.channels[0]
 thrusterChannel2 = shield.channels[1]
@@ -102,8 +102,9 @@ gripperbottomsideCode = threading.Thread(target = gripperbottomside.main, args =
 #lazersCode = threading.Thread(target=lazers.main, args= (ip_server,))
 #lightSourceCode= threading.Thread(target=lightSource.main, args = (ip_server,))
 #fryCode = threading.Thread(target= fry.main, args = (ip_server,))
-
 #servoCode.start()
+
+gripperbottomsideCode.start()
 thrusterCode.start()
 #saltWaterCode.start() 
 #lazersCode.start()

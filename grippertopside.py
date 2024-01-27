@@ -12,12 +12,13 @@ product_id = 0x00DE
 #enum creates a list where the first item in the list is either a 0
 device_list = hid.enumerate(vendor_id, product_id)
 #device_list_dumped = json.dumps(device_list)
+print(device_list)
 print(type(device_list))
 #sn = list(device_list[0].values())[3]
 print(type(device_list[0]))
 #print(type(sn))
 
-#
+#serial_number = device_list_dumped
 serial_number = device_list[0]["serial_number"]
 print(serial_number)
 
@@ -32,40 +33,39 @@ mcp.configure_spi_timing(chip_select_to_data_delay=0,
 
 #port for the socket
 port = 40000
-ip_server = "127.0.0.1"
+ip_server = "192.168.1.100"
 
 def main():
-
-    # set all pins as GPIO
-    for i in range(9):
-        mcp.set_gpio_designation(i, Mcp2210GpioDesignation.GPIO)
-
-    # set 2 to input
-    mcp.set_gpio_direction(2, Mcp2210GpioDirection.INPUT)
-    #the while 1 acts as a while true
-    while 1:
-        x = mcp.get_gpio_value(2)
-        print(x)
-        if x:
-            message = "a"
-            break
-        if not x:
-            message = "b"
-            break
 
     #set up a server socket
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serversocket.bind((ip_server, port))
     serversocket.listen(1)
     print("socket listening")
-    
+
+   
+
+    # set all pins as GPIO
+    for i in range(9):
+        mcp.set_gpio_designation(i, Mcp2210GpioDesignation.GPIO)
+
+    # set 2 to input
+    mcp.set_gpio_direction(1, Mcp2210GpioDirection.INPUT)
+
     (clientconnected, clientaddress) = serversocket.accept()
+    #the while 1 acts as a while true
     while True:
+        x = mcp.get_gpio_value(1)
+        print(x)
+        if x == False:
+            message = "a"
+            print(message)
+        if x == True:
+            message = "b"
+            print(message)
 
         data  = message.encode()
         clientconnected.send(data)
-
-        serversocket.close()
 
 
 
