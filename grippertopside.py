@@ -33,9 +33,9 @@ mcp.configure_spi_timing(chip_select_to_data_delay=0,
 
 #port for the socket
 port = 40000
-ip_server = "192.168.1.100"
 
-def main():
+def main(ip_server):
+    print(ip_server)
 
     #set up a server socket
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -107,4 +107,5 @@ def main():
 
 
 #call the main method
-main()
+if __name__ == "__main__":
+    main()
