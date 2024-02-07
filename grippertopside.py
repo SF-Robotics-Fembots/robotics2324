@@ -54,7 +54,9 @@ def main(ip_server):
 
     (clientconnected, clientaddress) = serversocket.accept()
     #the while 1 acts as a while true
+    x = mcp.get_gpio_value(1)
     while True:
+        prevx = x
         x = mcp.get_gpio_value(1)
         print(x)
         if x == False:
@@ -63,9 +65,10 @@ def main(ip_server):
         if x == True:
             message = "b"
             print(message)
-
-        data  = message.encode()
-        clientconnected.send(data)
+        if prevx != x:
+            data  = message.encode()
+            clientconnected.send(data)
+        time.sleep(0.1)
 
 
 
