@@ -32,12 +32,12 @@ def main(ip_server):
             #GPIO.output(20, GPIO.HIGH) #turns the gripper on
             GPIO.output(21, GPIO.HIGH)
             print("gripper on")
-            time.sleep(1.5)
+            time.sleep(0.3)
         elif data == "b":
             #GPIO.output(20, GPIO.LOW)
             GPIO.output(21, GPIO.LOW)
             print("gripper off")
-            time.sleep(1.5)
+            time.sleep(0.3)
     
     GPIO.cleanup()
         
