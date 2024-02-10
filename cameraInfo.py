@@ -6,4 +6,5 @@ info = 'printenv'
 os.system(info)
 output = subprocess.check_output("printenv", text=True)
 
+print("\n\n\n")
 print(output)
