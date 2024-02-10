@@ -1,10 +1,8 @@
 import os
 import subprocess 
 
-info = 'printenv'
-
-os.system(info)
-output = subprocess.check_output("printenv", text=True)
+info = os.system("printenv")
+output = subprocess.check_output(info, text=True)
 
 print("\n\n\n")
 print(output)
