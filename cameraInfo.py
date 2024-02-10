@@ -4,5 +4,5 @@ import subprocess
 print = 'printenv'
 
 os.system(print)
-output = subprocess.check_output(["os.system(print)"], text=True)
-print("\n" + output)
+output = subprocess.check_output(["printenv"], text=True)
+print("\n\n\n" + output)
