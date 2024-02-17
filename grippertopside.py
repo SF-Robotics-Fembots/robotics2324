@@ -49,14 +49,19 @@ def main(ip_server):
     for i in range(9):
         mcp.set_gpio_designation(i, Mcp2210GpioDesignation.GPIO)
 
-    # set 2 to input
+    # set 1 & to input
+    mcp.set_gpio_direction(0, Mcp2210GpioDirection.INPUT)
     mcp.set_gpio_direction(1, Mcp2210GpioDirection.INPUT)
+
 
     (clientconnected, clientaddress) = serversocket.accept()
     #the while 1 acts as a while true
     x = mcp.get_gpio_value(1)
+    y = mcp.get_gpio_value(0)
     while True:
         prevx = x
+        prevy = y
+        y = mcp.get_gpio_value(0)
         x = mcp.get_gpio_value(1)
         print(x)
         if x == False:
@@ -65,7 +70,13 @@ def main(ip_server):
         if x == True:
             message = "b"
             print(message)
-        if prevx != x:
+        if y == False:
+            message = "c"
+            print(message)
+        if y == True:
+            message = "d"
+            print(message)
+        if prevx != x or prevy != y:
             data  = message.encode()
             clientconnected.send(data)
         time.sleep(0.1)

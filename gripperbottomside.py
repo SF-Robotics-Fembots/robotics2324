@@ -5,6 +5,7 @@ import socket
 #setup for the board and the pins
 GPIO.setmode(GPIO.BCM) #set this to the gpio pins
 #both GPIO 20 and 21 for the outputs
+#first gripper
 GPIO.setup(20, GPIO.OUT) #actually pin 16
 GPIO.setup(21, GPIO.OUT) #actually pin 18
 
@@ -37,6 +38,14 @@ def main(ip_server):
             #GPIO.output(20, GPIO.LOW)
             GPIO.output(21, GPIO.LOW)
             print("gripper off")
+            time.sleep(0.3)
+        elif data == "c":
+            GPIO.output(20, GPIO.HIGH)
+            print("back gripper on")
+            time.sleep(0.3)
+        elif data == "d":
+            GPIO.output(20, GPIO.LOW)
+            print("back gripper off")
             time.sleep(0.3)
     
     GPIO.cleanup()
