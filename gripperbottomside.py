@@ -29,21 +29,21 @@ def main(ip_server):
         data = clientsocket.recv(1024)
         data = data.decode()
         #print(data)
-        if data == "a":
+        if "a" in data:
             #GPIO.output(20, GPIO.HIGH) #turns the gripper on
             GPIO.output(21, GPIO.HIGH)
             print("gripper on")
             time.sleep(0.3)
-        elif data == "b":
+        elif "b" in data:
             #GPIO.output(20, GPIO.LOW)
             GPIO.output(21, GPIO.LOW)
             print("gripper off")
             time.sleep(0.3)
-        elif data == "c":
+        elif "c" in data:
             GPIO.output(20, GPIO.HIGH)
             print("back gripper on")
             time.sleep(0.3)
-        elif data == "d":
+        elif "d" in data:
             GPIO.output(20, GPIO.LOW)
             print("back gripper off")
             time.sleep(0.3)

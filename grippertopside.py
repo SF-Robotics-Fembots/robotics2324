@@ -71,14 +71,16 @@ def main(ip_server):
             message = "b"
             print(message)
         if y == False:
-            message = "c"
-            print(message)
+            message2 = "c"
+            print(message2)
         if y == True:
-            message = "d"
-            print(message)
+            message2 = "d"
+            print(message2)
         if prevx != x or prevy != y:
-            data  = message.encode()
+            data  = message.encode() + message2.encode()
+            
             clientconnected.send(data)
+
         time.sleep(0.1)
 
 
