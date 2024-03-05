@@ -1,6 +1,7 @@
 import hid, json, socket
 import time
 from mcp2210 import Mcp2210, Mcp2210GpioDesignation, Mcp2210GpioDirection
+import pickle
 
 #reading each hid device in the json as a string, it stores EACH string in an enum w/ each device having
 #own index
@@ -31,10 +32,12 @@ mcp.configure_spi_timing(chip_select_to_data_delay=0,
                          last_data_byte_to_cs=0,
                          delay_between_bytes=0)
 
+
 #port for the socket
 port = 40000
+ip_server = "192.168.1.100"
 
-def main(ip_server):
+def main():
     print(ip_server)
 
     #set up a server socket
@@ -50,36 +53,36 @@ def main(ip_server):
         mcp.set_gpio_designation(i, Mcp2210GpioDesignation.GPIO)
 
     # set 1 & to input
-    mcp.set_gpio_direction(0, Mcp2210GpioDirection.INPUT)
+    mcp.set_gpio_direction(2, Mcp2210GpioDirection.INPUT)
     mcp.set_gpio_direction(1, Mcp2210GpioDirection.INPUT)
 
 
     (clientconnected, clientaddress) = serversocket.accept()
     #the while 1 acts as a while true
-    x = mcp.get_gpio_value(1)
-    y = mcp.get_gpio_value(0)
+    front = mcp.get_gpio_value(1)
+    back = mcp.get_gpio_value(2)
     while True:
-        prevx = x
-        prevy = y
-        y = mcp.get_gpio_value(0)
-        x = mcp.get_gpio_value(1)
-        print(x)
-        if x == False:
-            message = "a"
-            print(message)
-        if x == True:
-            message = "b"
-            print(message)
-        if y == False:
-            message2 = "c"
-            print(message2)
-        if y == True:
-            message2 = "d"
-            print(message2)
-        if prevx != x or prevy != y:
-            data  = message.encode() + message2.encode()
-            
-            clientconnected.send(data)
+        prev_front = front
+        prev_back = back
+        back = mcp.get_gpio_value(2)
+        front = mcp.get_gpio_value(1)
+        print(front)
+        print(back)
+        changed = 1
+        if prev_front != front or prev_back != back:
+            changed = 1
+            gripper_vals = {
+                'front' : front,
+                'back' : back
+            }
+
+            message = pickle.dumps(gripper_vals)
+            if changed == 1:
+                data  = message.encode()
+                print(data)      
+                clientconnected.send(data)
+        else:
+            changed = 0
 
         time.sleep(0.1)
 

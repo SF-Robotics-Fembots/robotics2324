@@ -211,7 +211,10 @@ def main(ip_server):
 
 			r_speed = data[data.find('r'):data.find('v')]
 			r_speed = r_speed[1:]
+			print(r_speed)
 			r_speed = float(r_speed)
+			print(r_speed)
+			
 			#print(type(r_speed))
 			#print(r_speed)
 			v_speed = data[data.find('v'):data.find('x')]

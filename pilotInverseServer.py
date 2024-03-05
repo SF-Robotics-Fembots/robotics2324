@@ -29,13 +29,13 @@ def main(ip_server):
         buttonInv = (pygame.joystick.Joystick(0).get_button(11))
         if(buttonNorm == 1):
             clientConnected.send(("a").encode())
-            print("a")
+            #print("a")
         elif(buttonInv == 1):
             clientConnected.send(("b").encode())
-            print("b")
+            #print("b")
         else:
             clientConnected.send(("c").encode())
-            print("c")
+            #print("c")
         time.sleep(.01)
 
 if __name__ == "__main__":

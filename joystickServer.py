@@ -15,11 +15,12 @@ def main(ip_server):
     
     serverSocket.bind((ip_server, 9090)) #was 9090
     serverSocket.listen(1)
-    print("socket listening")
+    print("socket listening joystick")
     
     (clientConnected, clientAddress) = serverSocket.accept()
     
     while True:
+        print("joystick loop")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 break
@@ -45,19 +46,19 @@ def main(ip_server):
 
         x_speed = (pygame.joystick.Joystick(0).get_axis(0))
         clientConnected.send(("x" + repr(x_speed)).encode())
-        print(x_speed)
+        print("x_speed: " + str(x_speed))
         #time.sleep(5)
         y_speed = (pygame.joystick.Joystick(0).get_axis(1))
         clientConnected.send(("y" + repr(y_speed)).encode())
-        print(y_speed)
+        print("y_speed: " + str(y_speed))
         #time.sleep(5)
         r_speed = (pygame.joystick.Joystick(0).get_axis(2))
         clientConnected.send(("r" + repr(r_speed)).encode())
-        print(r_speed)
+        print("r_speed: " + str(r_speed))
         #time.sleep(5)
         v_speed = (pygame.joystick.Joystick(0).get_axis(3))
         clientConnected.send(("v" + repr(v_speed)).encode())
-        print(v_speed)
+        print("v_speed: " + str(v_speed))
         time.sleep(.01)
         
 if __name__ == "__main__":
