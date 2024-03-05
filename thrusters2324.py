@@ -194,7 +194,7 @@ def main(ip_server):
 			print("datafraud: " + dataFraud)
 			data = (clientSocket.recv(1024)).decode()
 			#print("opwueobn")
-			#print("data " + data)
+			print("data " + data)
 
 			x_speed = dataFraud
 			x_speed = x_speed[1:]
