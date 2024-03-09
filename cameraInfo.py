@@ -2,24 +2,26 @@ import os
 import subprocess 
 import logging
 
-info = "printenv"
-#info = "gci env:"
-output = subprocess.check_output(info, text=True)
+videos = ["0", "2"]
+ports = []
+for x in videos:
+    command = "/dev/video" + x
+    output = subprocess.check_output(["v4l2-ctl", "--all", "-d", command], text=True)
 
-logging.basicConfig(level=logging.INFO, filename = "cameraInfo.log", filemode = "w")
+    output_line = output.splitlines()
 
-output_line = output.splitlines() #splits data into lines?
+    for x in range(0, len(output_line)):
+        if "Bus info" in output_line[x]:
+            result = output_line[x]
 
-for x in range(0, len(output_line)): #goes through each linr and check is there is mention of "user"
-    if "USER=" in output_line[x]:
-        result = output_line[x]
-        print(result)
-        logging.info(output_line[x])
+    split_result = result.split("-1.")
+    name = split_result[1]
+    ports.append(name)
 
-split_result = result.split("=")
-name = split_result[1]
-print(name)
-   # separate = output_line[x].split() #should split the line into each word
-   # for i in range(0, len(separate)):
-        
+info = {
+    "port" + ports[0]: "/dev/video"+ videos[0],
+    "port" + ports[1]: "/dev/video" + videos[1]
+}
+
+subprocess.call(['bash', 'camerarun.sh', info["port" + ports[0]], info["port" + ports[1]]])
 
