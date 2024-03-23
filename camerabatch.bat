@@ -1,2 +1,1 @@
-py camerastream1.py
-#& py camerastream2.py
+python3 practiceGUI2.py 

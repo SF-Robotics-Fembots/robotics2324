@@ -5,6 +5,7 @@ from PyQt5.QtGui import QPixmap, QIcon, QImage, QPalette
 from PyQt5.QtCore import QThread, pyqtSignal, Qt, QEvent, QObject
 from PyQt5 import QtCore
 import sys
+import threading
 import os
 import subprocess 
 import logging
@@ -17,23 +18,23 @@ class CaptureCam(QThread):
     def __init__(self, camera_id):
         super(CaptureCam, self).__init__()
         self.ThreadActive = True
+      #  self.ThreadActive1 = True
         self.camera_id = 0
         if self.camera_id == 0:
             self.camera = 0
         #elif self.camera_id == 1:
            # self.camera = "http://192.168.1.99:8080/stream"
         
-
     def run(self) -> None:
-        self.ThreadActive = True
+        self.ThreadActive = False
         capture1 = cv2.VideoCapture(0)
-        capture2 = cv2.VideoCapture(1)
-
+     #  capture2 = cv2.VideoCapture(0)
         #list = [capture1, capture2]
         while self.ThreadActive:
                 #ret is boolean to see if there is a return of frame, frame is the return of frame
                 ret, frame = capture1.read()
-                ret1, frame1 = capture2.read()
+                #ret1, frame1 = capture2.read()
+
                 if ret:
                     Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     FlippedImage = cv2.flip(Image, 1) #mirrors
@@ -41,25 +42,60 @@ class CaptureCam(QThread):
                                             FlippedImage.shape[0], QImage.Format_RGB888)
                     Pic = ConvertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
                     self.ImageUpdate.emit(Pic)
-                if ret1:
-                    Image1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2RGB)
-                    FlippedImage1 = cv2.flip(Image1, 1) #mirrors
-                    ConvertToQtFormat1 = QImage(FlippedImage1.data, FlippedImage1.shape[1],
-                                            FlippedImage1.shape[0], QImage.Format_RGB888)
-                    Pic1 = ConvertToQtFormat1.scaled(640, 480, Qt.KeepAspectRatio)
-                    self.ImageUpdate1.emit(Pic1)
-                
+
+    def run2(self) -> None:
+        self.ThreadActive = True
+        capture2 = cv2.VideoCapture(1)
+     #  capture2 = cv2.VideoCapture(0)
+        #list = [capture1, capture2]
+        while self.ThreadActive:
+                #ret is boolean to see if there is a return of frame, frame is the return of frame
+                ret, frame = capture2.read()
+                #ret1, frame1 = capture2.read()
+
+                if ret:
+                    Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    FlippedImage = cv2.flip(Image, 1) #mirrors
+                    ConvertToQtFormat = QImage(FlippedImage.data, FlippedImage.shape[1],
+                                            FlippedImage.shape[0], QImage.Format_RGB888)
+                    Pic = ConvertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+                    self.ImageUpdate1.emit(Pic)
+    
+    def camprint(self):
+        print("is running")
+#    def run2(self) -> None:
+
+ #               if ret1:
+ #                   Image1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2RGB)
+ #                   FlippedImage1 = cv2.flip(Image1, 1) #mirrors
+ #                   ConvertToQtFormat1 = QImage(FlippedImage1.data, FlippedImage1.shape[1],
+ #                                       FlippedImage1.shape[0], QImage.Format_RGB888)
+ #                   Pic1 = ConvertToQtFormat1.scaled(640, 480, Qt.KeepAspectRatio)
+ #                   self.ImageUpdate1.emit(Pic1)
+
+
+    #hconcat
+    #cam1 = threading.Thread(target= run, args=())
+   # cam2 = threading.Thread(target = run2, args=())
+
+    #cam1.start()
+    #cam2.start()
+
+    #cam1.join()
+    #cam2.join()
 
     def stop(self):
         self.ThreadActive = False
+       # self.ThreadActive1 = False
         self.quit()
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         
-        self.camera_1 = cv2.VideoCapture('dev/video[0]')
-        self.camera_2 = 2
+        #self.camera_1 = 2
+        #self.camera_2 = cv2.VideoCapture('dev/video[0]')
 
         self.camera_1 = QLabel()
         self.camera_1.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -91,8 +127,11 @@ class MainWindow(QMainWindow):
         self.CaptureCam_2 = CaptureCam(self.camera_2)
         self.CaptureCam_2.ImageUpdate1.connect(lambda image: self.ShowCamera2(image))
 
-        self.CaptureCam_1.start()
-        self.CaptureCam_2.start()
+        self.CaptureCam_1.run()
+        self.CaptureCam_1.camprint()
+        #self.CaptureCam_2.start()
+        #self.CaptureCam_1.camrun(0)
+        #self.CaptureCam_2.run(1)
 
     def SetupUI(self):
         grid_layout = QGridLayout()
