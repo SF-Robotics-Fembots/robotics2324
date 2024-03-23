@@ -141,7 +141,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.widget)
         self.setMinimumSize(800, 600)
         self.showMaximized()
-        self.setStyleSheet("QMainWindow {background: 'black';}")
+        self.setStyleSheet("QMainWindow {background: '#F1F6FD';}")
         self.setWindowIcon(QIcon(QPixmap("camera_2.png")))
 
         self.setWindowTitle("CAMERA GUI")
