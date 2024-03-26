@@ -24,6 +24,12 @@ def main(ip_server):
 	# library setup
 	pygame.init()
 
+	#setting up the median of the 'off' values for the thrusters
+	horiz_off_value = 1500
+	horiz_thrust_offset = 60
+	vert_off_value = 1484
+	vert_thrust_offset = 25
+
 	i2c = busio.I2C(board.SCL, board.SDA)
 	#SCL: serial clock number
 	#SDA: serial data line
@@ -349,10 +355,10 @@ def main(ip_server):
 			# both for loops adjust the range of the thrusters to 1000-2000
 			for thrusters in range(0, 4):
 				if (thrusterVals[thrusters] == 0):
-					powerThrusterVals[thrusters] = 1489
+					powerThrusterVals[thrusters] = horiz_off_value
 				else:
 					#powerThrusterVals[thrusters] = 1489 + (((abs(thrusterVals[thrusters]))/thrusterVals[thrusters]) * (25 + (thrusterVals[thrusters] * 4.64)))
-					powerThrusterVals[thrusters] = 1489 + ((abs(thrusterVals[thrusters])/thrusterVals[thrusters]) * 25) + (thrusterVals[thrusters] * 7.0)
+					powerThrusterVals[thrusters] = horiz_off_value + ((abs(thrusterVals[thrusters])/thrusterVals[thrusters]) * horiz_thrust_offset) + (thrusterVals[thrusters] * 7.0)
 			#print(powerThrusterVals)
 			#was 25 and 4.64
 			#using 1489 because 1489 = median of thruster calibration (all thrusters stop at 1489)
@@ -360,10 +366,11 @@ def main(ip_server):
 			for vertThrusters in range(0, 2):
 				print(vertThrusterVals[vertThrusters])
 				if (vertThrusterVals[vertThrusters] == 0):
-					powerVertThrusterVals[vertThrusters] = 1489
+					powerVertThrusterVals[vertThrusters] = vert_off_value
 				else:
 					#powerVertThrusterVals[vertThrusters] = 1489 + (((abs(vertThrusterVals[vertThrusters]))/vertThrusterVals[vertThrusters]) * (25 + (vertThrusterVals[vertThrusters] * 4.64)))
-					powerVertThrusterVals[vertThrusters] = 1489 + ((abs(vertThrusterVals[vertThrusters])/vertThrusterVals[vertThrusters]) * 25) + (vertThrusterVals[vertThrusters] * 7.0)
+					powerVertThrusterVals[vertThrusters] = vert_off_value + ((abs(vertThrusterVals[vertThrusters])/vertThrusterVals[vertThrusters]) * vert_thrust_offset) + (vertThrusterVals[vertThrusters] * 7.0)
+					#changed from *25 to *50 because verts on this year's robot have a 50 uS deadzone & horizontals only have 25 uS deadzone on each side of center
 					#abs(vertThrusterVals[vertThrusters]) just tells direction
 
 
@@ -377,21 +384,21 @@ def main(ip_server):
 
 
 
-			finalHorDiff = abs(powerThrusterVals[1] - 1489)
-			finalVertDiff = abs(powerVertThrusterVals[1] - 1489)
+			finalHorDiff = abs(powerThrusterVals[1] - horiz_off_value)
+			finalVertDiff = abs(powerVertThrusterVals[1] - vert_off_value)
 			finalTotal = (finalHorDiff * 4) + (finalVertDiff * 2)
 			if (finalTotal != 0):
 				percent = (1950/finalTotal)
 				#finds percent to display how much we are exceeding power use (ex. exceeding power limit by 5%)
 				if (finalTotal > 1950): #max is 2934
 					for thruster in range(0, 4):
-						Diff = powerThrusterVals[thruster] - 1489
+						Diff = powerThrusterVals[thruster] - horiz_off_value
 						newDiff = Diff * (percent)
-						powerThrusterVals[thruster] = 1489 + newDiff
+						powerThrusterVals[thruster] = horiz_off_value + newDiff
 					for vertThruster in range(0, 2):
-						vertDiff = powerVertThrusterVals[vertThruster] - 1489
+						vertDiff = powerVertThrusterVals[vertThruster] - vert_off_value
 						newVertDiff = vertDiff * (percent)
-						powerVertThrusterVals[vertThruster] = 1489 + newVertDiff
+						powerVertThrusterVals[vertThruster] = vert_off_value + newVertDiff
 						#finding total thruster throttles and making sure power isnt exceeded
 						#main power limiting
 						#if power is exceeded, then values are made smaller in line 339
