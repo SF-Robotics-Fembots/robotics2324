@@ -2,7 +2,7 @@ import os
 import subprocess 
 import logging
 
-videos = ["0", "2"]
+videos = ["0", "2", "4"]
 ports = []
 for x in videos:
     command = "/dev/video" + x
@@ -23,5 +23,5 @@ info = {
     "port" + ports[1]: "/dev/video" + videos[1]
 }
 
-subprocess.call(['bash', 'camerarun.sh', info["port" + ports[0]], info["port" + ports[1]]])
+subprocess.call(['bash', 'camerarun.sh', info["port" + ports[0]], info["port" + ports[1]], info["port" + ports[2]]])
 

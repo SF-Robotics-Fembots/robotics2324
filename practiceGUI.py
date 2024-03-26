@@ -25,9 +25,9 @@ class CaptureCam(QThread):
         #elif self.camera_id == 1:
            # self.camera = "http://192.168.1.99:8080/stream"
         
-    def run(self) -> None:
+    def run(self, num) -> None:
         self.ThreadActive = False
-        capture1 = cv2.VideoCapture(0)
+        capture1 = cv2.VideoCapture(num)
      #  capture2 = cv2.VideoCapture(0)
         #list = [capture1, capture2]
         while self.ThreadActive:
@@ -42,25 +42,9 @@ class CaptureCam(QThread):
                                             FlippedImage.shape[0], QImage.Format_RGB888)
                     Pic = ConvertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
                     self.ImageUpdate.emit(Pic)
+                else:
+                    break
 
-    def run2(self) -> None:
-        self.ThreadActive = True
-        capture2 = cv2.VideoCapture(1)
-     #  capture2 = cv2.VideoCapture(0)
-        #list = [capture1, capture2]
-        while self.ThreadActive:
-                #ret is boolean to see if there is a return of frame, frame is the return of frame
-                ret, frame = capture2.read()
-                #ret1, frame1 = capture2.read()
-
-                if ret:
-                    Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    FlippedImage = cv2.flip(Image, 1) #mirrors
-                    ConvertToQtFormat = QImage(FlippedImage.data, FlippedImage.shape[1],
-                                            FlippedImage.shape[0], QImage.Format_RGB888)
-                    Pic = ConvertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-                    self.ImageUpdate1.emit(Pic)
-    
     def camprint(self):
         print("is running")
 #    def run2(self) -> None:
@@ -127,7 +111,7 @@ class MainWindow(QMainWindow):
         self.CaptureCam_2 = CaptureCam(self.camera_2)
         self.CaptureCam_2.ImageUpdate1.connect(lambda image: self.ShowCamera2(image))
 
-        self.CaptureCam_1.run()
+        self.CaptureCam_1.run(0)
         self.CaptureCam_1.camprint()
         #self.CaptureCam_2.start()
         #self.CaptureCam_1.camrun(0)
