@@ -1,6 +1,6 @@
 import cv2
 
-video1 = cv2.VideoCapture("http://192.168.1.99:8082/stream")
+video1 = cv2.VideoCapture("http://192.168.1.99:8084/stream")
 
 
 while video1.isOpened():
