@@ -1,4 +1,3 @@
-import lgpio
 #works w/ sockets
 #library for r
 import pygame   #pip install pygame
@@ -40,12 +39,12 @@ def main(ip_server):
 	#100 Hz = cycle time for PWM signal
 	#meaning robot speed can change 100 times a second
 
-	thrusterChannel1 = shield.channels[0]
+	thrusterChannel1 = shield.channels[14]
 	thrusterChannel2 = shield.channels[15]
 	thrusterChannel3 = shield.channels[2]
 	thrusterChannel4 = shield.channels[13] #changed from 3, 4, 5
-	thrusterChannel5 = shield.channels[1]
-	thrusterChannel6 = shield.channels[14]
+	thrusterChannel5 = shield.channels[0]
+	thrusterChannel6 = shield.channels[1]
 	thrusterChannel1.duty_cycle = 0x2666
 	#duty cycle: ration of PW to range (tells power of thrusters/how fast thrusters go)
 	#NOTE: cycle time for PWM doesnt change, but duty cycle does
@@ -129,6 +128,7 @@ def main(ip_server):
 	def calcHorizontal(joyValue, thrusterNum, direction):
 		if (-5 <= joyValue <= 5):         # can adjust to create deadzone
 			return 0
+		#used to be 5 on both horizontal and vertical deadzones
 		#creates deadzones for where the joystick values do not do anything
 		#calculation for everything but 0
 		else:
@@ -139,7 +139,7 @@ def main(ip_server):
 
 	# vertical thrusters calculations
 	def calcVertical(joyValue, thrusterNum, direction):
-		if (-5 <= joyValue <= 5):
+		if (-10 <= joyValue <= 10):
 			return 0
 		# calculation for everything not 0
 		else:
@@ -290,10 +290,10 @@ def main(ip_server):
 			#xDirArray = [-1*direction, 1*direction, -1*direction, 1*direction]
 			#yDirArray = [1*direction, 1*direction, -1*direction, -1*direction]
 			#rDirArray = [-1, 1, 1, -1]
-			xDirArray = [-1*direction, 1*direction, 1*direction, -1*direction]
-			yDirArray = [1*direction, 1*direction, 1*direction, 1*direction]
-			rDirArray = [-1, 1, -1, 1]
-			vDirArray = [-1, 1]
+			xDirArray = [1*direction, 1*direction, 1*direction, -1*direction]
+			yDirArray = [-1*direction, 1*direction, 1*direction, 1*direction]
+			rDirArray = [1, 1, -1, 1]
+			vDirArray = [-1, -1]
 			#this section is basically inverse pilot
 			#while this code is being processed, directions (left & right, front & back), are inversed when pilot switches cameras
 

@@ -1,1 +1,1 @@
-ustreamer --device=/dev/video1 --host=192.168.1.99 --port=80800 --device-timeout 2 -r 640x480 -b 1
+ustreamer --device=/dev/video2 --host=192.168.1.99 --port=8008 --device-timeout 2 -r 320x240 -b 1

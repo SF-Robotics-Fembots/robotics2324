@@ -1,6 +1,6 @@
 import time, RPi.GPIO as GPIO
 import socket
-import pickle
+import json
 
 #GPIO.cleanup()
 #setup for the board and the pins
@@ -15,7 +15,7 @@ GPIO.setup(back_grip, GPIO.OUT) #actually pin 18
 #set up the socket connection ugh
 #bottomside is client
 #global server_ip, port will be defined in the threading program
-#server_ip = "192.168.1.100"
+#ip_server = "192.168.1.100"
 port = 40000 #is up for debate
 #ip_server = "127.0.0.1"
 
@@ -31,8 +31,9 @@ def main(ip_server):
         #print("client connected!")
         data = clientsocket.recv(1024)
         data = data.decode()
-        database = pickle.load(data)
-        print(database)
+        print(data)
+        database = json.loads(data)
+        #print(database)
         #set the GPIO values based on the dictionary values
         GPIO.output(front_grip, database['front'])
         GPIO.output(back_grip, database['back'])
