@@ -35,9 +35,9 @@ mcp.configure_spi_timing(chip_select_to_data_delay=0,
 
 #port for the socket
 port = 40000
-ip_server = "192.168.1.100"
+#ip_server = "192.168.1.100"
 
-def main():
+def main(ip_server):
     print(ip_server)
 
     #set up a server socket
@@ -66,8 +66,8 @@ def main():
         prev_back = back
         back = mcp.get_gpio_value(2)
         front = mcp.get_gpio_value(1)
-        print(front)
-        print(back)
+       # print(front)
+       # print(back)
         changed = 1
         if prev_front != front or prev_back != back:
             changed = 1
@@ -75,12 +75,11 @@ def main():
                 'front' : front,
                 'back' : back
             }
-
-            message = pickle.dumps(gripper_vals)
-            if changed == 1:
-                data  = message.encode()
-                print(data)      
-                clientconnected.send(data)
+            message = json.dumps(gripper_vals)
+            print(message)
+            message = message.encode()
+            if changed == 1:    
+                clientconnected.send(message)
         else:
             changed = 0
 
