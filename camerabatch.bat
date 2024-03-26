@@ -1,1 +1,1 @@
-python3 cameragui2324.py
+py practicegui2.py
