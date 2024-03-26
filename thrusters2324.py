@@ -30,6 +30,12 @@ def main(ip_server):
 	vert_off_value = 1484
 	vert_thrust_offset = 25
 
+	#debug! make more laters
+	debug_l2 = 0
+
+	#rotation compensation
+	rot_comp = 0.1
+
 	i2c = busio.I2C(board.SCL, board.SDA)
 	#SCL: serial clock number
 	#SDA: serial data line
@@ -184,47 +190,32 @@ def main(ip_server):
 
 	directionRecieved = "a"
 	direction = 1
-	#print('direction: ' + str(direction))
-	#print('direction2: ' + directionRecieved)
 	# main loop
 	while True:
 		try:
-			#print("loopstart")
-			#for event in pygame.event.get():
-			 #   if event.type == pygame.QUIT:
-			  #      break
-			   # if event.type == pygame.JOYAXISMOTION:
-				#    print(event)
 			dataFraud = (clientSocket.recv(1024)).decode()
 			#time.sleep(1)
-			print("datafraud: " + dataFraud)
+			if debug_l2: print("datafraud: " + dataFraud)
 			data = (clientSocket.recv(1024)).decode()
-			#print("opwueobn")
-			print("data " + data)
+			if debug_l2: print("data " + data)
 
 			x_speed = dataFraud
 			x_speed = x_speed[1:]
 			#[1:]: used for inverse orders/directions
 			x_speed = float(x_speed)
-			#print(type(x_speed))
-			#print(x_speed)
-
+	
 			y_speed = data[data.find('y'):data.find('r')]
 			y_speed = y_speed[1:]
 			y_speed = float(y_speed)
-			#print(type(y_speed))
-			#print(y_speed)
-
+			
 			r_speed = data[data.find('r'):data.find('v')]
 			r_speed = r_speed[1:]
 			r_speed = float(r_speed)
-			#print(type(r_speed))
-			#print(r_speed)
+			
 			v_speed = data[data.find('v'):data.find('x')]
 			v_speed = v_speed[1:]
 			v_speed = float(v_speed)
-			#print(type(v_speed))
-			#print(v_speed
+			
 
 			#lines 157-190: translates first measured joystick values, which comes as a float, from top side
 			#then, the float goes through a char*
@@ -265,17 +256,16 @@ def main(ip_server):
 			y_speed = int((y_speed)*50)
 			r_speed = int((r_speed)*25)
 			v_speed = int((v_speed)*50)
+
+			print("R Speed: " + r_speed)
+			#rotation compensation :(
+			r_speed = int(rot_comp * y_speed + r_speed)
+
+			print("R Speed: " + r_speed + ", Y Speed: " + y_speed)
 			#calculate new speeds
 			#rotation is not 50 because 50 is too fast
             #MOD: value_speed = int((value_speed)*50)
 
-			#print(x_speed)
-			#print(y_speed)
-			#print(r_speed)
-			#print(v_speed)
-
-			# print("X-Speed " + str(x_speed) + "      Y-Speed " + str(y_speed) + "       R-Speed " + str(r_speed) + "       V-Speed " + str(v_speed))
-			#print(r_speed)
 
 			#each item in the list represents if the output for each thruster is pos. or neg.
 			# ex: in xDirArray, the first element in index 0 (-1) expects that T1 would have a neg. output given a direction
@@ -291,8 +281,8 @@ def main(ip_server):
 				#a is forwards, b is backwards
 			else:
 				direction = direction
-			print(directionRecieved)
-			print(direction)
+			if debug_l2: print(directionRecieved)
+			if debug_l2: print(direction)
 			#xDirArray = [-1*direction, 1*direction, -1*direction, 1*direction]
 			#yDirArray = [1*direction, 1*direction, -1*direction, -1*direction]
 			#rDirArray = [-1, 1, 1, -1]
@@ -312,7 +302,6 @@ def main(ip_server):
 			for tNum in range(0,4):
 				#goes through code four times
 				oldThrusterVals[tNum] = int((calcHorizontal(x_speed, tNum, xDirArray) + calcHorizontal(y_speed, tNum, yDirArray) + calcHorizontal(r_speed, tNum, rDirArray)))
-			#print(thrusterVals[tNum])
 			# loop to collect value for each thruster using vertical calculation function
 			for vNum in range(0,2):
 				#goes through code two times
@@ -329,24 +318,18 @@ def main(ip_server):
 
 			for vNum in range(0, 2):
 				vertThrusterVals[vNum] = int(oldVertThrusterVals[vNum] * clockVertArray[vNum])
-			#print("first print")
-			#print(thrusterVals)
 
 		# original print
-
 			# adjusting range
 			max_thruster = 0
 			for thrusters in range(0,4):
 				max_thruster = max(max_thruster, abs(thrusterVals[thrusters]))
-			#print(max_thruster)
 
 			if (max_thruster != 0) and (max_thruster >= 50):
 				for thrusters in range(0, 4):
 					thrusterVals[thrusters] = int(thrusterVals[thrusters] * (50 / max_thruster))
 					#lines 284-291: finds the maximum value of all throttle values, then limits them if needed
 
-			#print("second print")
-			#print(thrusterVals)
 
 			# new lists for the adjusted values for our power functions
 			powerThrusterVals = [0, 0, 0, 0]
@@ -359,12 +342,11 @@ def main(ip_server):
 				else:
 					#powerThrusterVals[thrusters] = 1489 + (((abs(thrusterVals[thrusters]))/thrusterVals[thrusters]) * (25 + (thrusterVals[thrusters] * 4.64)))
 					powerThrusterVals[thrusters] = horiz_off_value + ((abs(thrusterVals[thrusters])/thrusterVals[thrusters]) * horiz_thrust_offset) + (thrusterVals[thrusters] * 7.0)
-			#print(powerThrusterVals)
 			#was 25 and 4.64
 			#using 1489 because 1489 = median of thruster calibration (all thrusters stop at 1489)
 			# NOTE - when going full down, the lowest the value goes is 1015 -- fix later --
 			for vertThrusters in range(0, 2):
-				print(vertThrusterVals[vertThrusters])
+				if debug_l2: print(vertThrusterVals[vertThrusters])
 				if (vertThrusterVals[vertThrusters] == 0):
 					powerVertThrusterVals[vertThrusters] = vert_off_value
 				else:
@@ -373,14 +355,6 @@ def main(ip_server):
 					#changed from *25 to *50 because verts on this year's robot have a 50 uS deadzone & horizontals only have 25 uS deadzone on each side of center
 					#abs(vertThrusterVals[vertThrusters]) just tells direction
 
-
-
-		 # other print
-			#print(max_thruster)
-			# PRINT
-
-			# Set-up --- Should check if set up correctly
-			#print(powerThrusterVals[1])
 
 
 
@@ -404,7 +378,7 @@ def main(ip_server):
 						#if power is exceeded, then values are made smaller in line 339
 
 			#print("third print")
-			print(powerThrusterVals)
+			if debug_l2: print(powerThrusterVals)
 			#print(powerVertThrusterVals)
 			#totalEverything = powerThrusterVals[0] + powerThrusterVals[1] + powerThrusterVals[2] + powerThrusterVals[3] + powerVertThrusterVals[0] + powerVertThrusterVals[1]
 			#print(totalEverything)
