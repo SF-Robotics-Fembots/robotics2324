@@ -257,7 +257,7 @@ def main(ip_server):
 			r_speed = int((r_speed)*25)
 			v_speed = int((v_speed)*50)
 
-			print("R Speed: " + r_speed)
+			print("R Speed: " + str(r_speed))
 			#rotation compensation :(
 			r_speed = int(rot_comp * y_speed + r_speed)
 
