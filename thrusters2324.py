@@ -261,7 +261,7 @@ def main(ip_server):
 			#rotation compensation :(
 			r_speed = int(rot_comp * y_speed + r_speed)
 
-			print("R Speed: " + r_speed + ", Y Speed: " + y_speed)
+			print("R Speed: " + str(r_speed) + ", Y Speed: " + str(y_speed))
 			#calculate new speeds
 			#rotation is not 50 because 50 is too fast
             #MOD: value_speed = int((value_speed)*50)
