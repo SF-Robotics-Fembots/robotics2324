@@ -7,46 +7,50 @@ from PyQt5.QtCore import QThread, pyqtSignal, Qt, QEvent, QObject
 from PyQt5 import QtCore
 import sys
 
-#gets camera frames
-class CaptureCam(QThread):
-    ImageUpdate = pyqtSignal(QImage)
 
-    def __init__(self, url):
+class CaptureCam(QThread):
+    # Signal emitted when a new image or a new frame is ready.
+    ImageUpdated = pyqtSignal(QImage)
+
+    def __init__(self, url) -> None:
         super(CaptureCam, self).__init__()
+        # Declare and initialize instance variables.
         self.url = url
-        self.threadActive = True
+        self.__thread_active = True
+        self.fps = 0
+        self.__thread_pause = False
 
     def run(self) -> None:
-        capture = cv2.VideoCapture(self.url)
-
-        if capture.isOpened():
-            while self.threadActive:
+        # Capture video from a network stream.
+        cap = cv2.VideoCapture(self.url)
+        # If video capturing has been initialized already.q
+        if cap.isOpened():
+            # While the thread is active.
+            while self.__thread_active:
                 #
-                ret, frame = capture.read()
-                # frame setup
+                ret, frame = cap.read()
+                # If frame is read correctly.
                 if ret:
                     height, width, channels = frame.shape
                     bytes_per_line = width * channels
                     cv_rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     qt_rgb_image = QImage(cv_rgb_image.data, width, height, bytes_per_line, QImage.Format_RGB888)
                     qt_rgb_image_scaled = qt_rgb_image.scaled(1280, 720, Qt.KeepAspectRatio)
-                    self.ImageUpdate.emit(qt_rgb_image_scaled)
+                    self.ImageUpdated.emit(qt_rgb_image_scaled)
                 else:
                     break
-        capture.release()
+        cap.release()
         self.quit()
 
     def stop(self) -> None:
-        self.threadActive = False
+        self.__thread_active = False
 
-#ui setup
 class MainWindow(QMainWindow):
 
     def __init__(self) -> None:
         super(MainWindow, self).__init__()
 
-        #get camera streams
-        self.url_1 = cv2.VideoCapture('http://192.168.1.99:8080/stream')
+        self.url_1 = cv2.VideoCapture("http://192.168.1.99:8080/stream")
         self.url_2 = cv2.VideoCapture("http://192.168.1.99:8082/stream")
         self.url_3 = cv2.VideoCapture("http://192.168.1.99:8084/stream")
         self.url_4 = 0
@@ -106,20 +110,18 @@ class MainWindow(QMainWindow):
 
         self.__SetupUI()
 
-        #connects to ImageUpdate to keep updating the frames
         self.CaptureCam_1 = CaptureCam(self.url_1)
-        self.CaptureCam_1.ImageUpdate.connect(lambda image: self.ShowCamera1(image))
+        self.CaptureCam_1.ImageUpdated.connect(lambda image: self.ShowCamera1(image))
 
         self.CaptureCam_2 = CaptureCam(self.url_2)
-        self.CaptureCam_2.ImageUpdate.connect(lambda image: self.ShowCamera2(image))
+        self.CaptureCam_2.ImageUpdated.connect(lambda image: self.ShowCamera2(image))
 
         self.CaptureCam_3 = CaptureCam(self.url_3)
-        self.CaptureCam_3.ImageUpdate.connect(lambda image: self.ShowCamera3(image))
+        self.CaptureCam_3.ImageUpdated.connect(lambda image: self.ShowCamera3(image))
 
         self.CaptureCam_4 = CaptureCam(self.url_4)
-        self.CaptureCam_4.ImageUpdate.connect(lambda image: self.ShowCamera4(image))
+        self.CaptureCam_4.ImageUpdated.connect(lambda image: self.ShowCamera4(image))
 
-        #.start() runs the .run() function in CaptureCam that changes frame settings
         self.CaptureCam_1.start()
         self.CaptureCam_2.start()
         self.CaptureCam_3.start()
@@ -139,7 +141,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.widget)
         self.setMinimumSize(800, 600)
         self.showMaximized()
-        self.setStyleSheet("QMainWindow {background: 'midnightblue';}")
+        self.setStyleSheet("QMainWindow {background: '#F1F6FD';}")
+        self.setWindowIcon(QIcon(QPixmap("camera_2.png")))
 
         self.setWindowTitle("CAMERA GUI")
 
@@ -159,8 +162,7 @@ class MainWindow(QMainWindow):
     def ShowCamera4(self, frame: QImage) -> None:
         self.camera_4.setPixmap(QPixmap.fromImage(frame))
 
-# funtcion maximizes certain windows when double clicked
-    def eventFilter(self, source: QObject, event: QEvent):
+    def eventFilter(self, source: QObject, event: QEvent) -> bool:
         if event.type() == QtCore.QEvent.MouseButtonDblClick:
             if source.objectName() == 'Camera_1':
                 if self.list_cameras["Camera_1"] == "Normal":
@@ -212,20 +214,17 @@ class MainWindow(QMainWindow):
         else:
             return super(MainWindow, self).eventFilter(source, event)
 
-    def close(self, event):
+    def close(self, event) -> None:
         if self.CaptureCam_1.isRunning():
             self.CaptureCam_1.quit()
         if self.CaptureCam_2.isRunning():
             self.CaptureCam_2.quit()
         if self.CaptureCam_3.isRunning():
             self.CaptureCam_3.quit()
-        if self.CaptureCam_4.isRunning():
-            self.CaptureCam_4.quit()
         event.accept()
 
 
-#runs window
-def main():
+def main() -> None:
     # Create a QApplication object. It manages the GUI application's control flow and main settings.
     # It handles widget specific initialization, finalization.
     # For any GUI application using Qt, there is precisely one QApplication object
