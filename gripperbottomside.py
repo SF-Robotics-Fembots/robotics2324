@@ -7,8 +7,8 @@ import json
 GPIO.setmode(GPIO.BCM) #set this to the gpio pins
 #both GPIO 20 and 21 for the outputs
 #first gripper
-front_grip = 21
-back_grip = 20
+front_grip = 24
+back_grip = 23
 GPIO.setup(front_grip, GPIO.OUT) #actually pin 16
 GPIO.setup(back_grip, GPIO.OUT) #actually pin 18
 

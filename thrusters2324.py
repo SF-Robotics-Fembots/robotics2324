@@ -34,7 +34,7 @@ def main(ip_server):
 	debug_l2 = 0
 
 	#rotation compensation
-	rot_comp = 0.1
+	rot_comp = -0.08
 
 	i2c = busio.I2C(board.SCL, board.SDA)
 	#SCL: serial clock number
@@ -255,11 +255,11 @@ def main(ip_server):
 			x_speed = int((x_speed)*50)
 			y_speed = int((y_speed)*50)
 			r_speed = int((r_speed)*25)
-			v_speed = int((v_speed)*50)
+			v_speed = int((v_speed)*85)
 
 			print("R Speed: " + str(r_speed))
 			#rotation compensation :(
-			r_speed = int(rot_comp * y_speed + r_speed)
+			r_speed = int(r_speed + rot_comp * y_speed)
 
 			print("R Speed: " + str(r_speed) + ", Y Speed: " + str(y_speed))
 			#calculate new speeds
