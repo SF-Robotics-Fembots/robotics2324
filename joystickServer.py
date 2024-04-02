@@ -53,27 +53,45 @@ def main(ip_server):
         if pygame.joystick.Joystick(0).get_button(6): slow_speed = 0
         if pygame.joystick.Joystick(0).get_button(4): slow_speed = 1
 
+        def calcValue(joyValue):
+            if(abs(joyValue) < 0.05):
+                return 0
+            else:
+                return joyValue
+            
+        def calcVertValue(joyValue):
+            if(abs(joyValue) < 0.10):
+                return 0
+            else:
+                return joyValue
+
+        
 
         x_speed = (pygame.joystick.Joystick(0).get_axis(0))
-        if slow_speed: 
-            x_speed = x_speed*ratio
+        calcValue(x_speed) #preemptive deadzone calcs for everybody!
+        if slow_speed: x_speed = x_speed*ratio
         clientConnected.send(("x" + repr(x_speed)).encode())
         print("x_speed: " + str(x_speed))
         
         y_speed = (pygame.joystick.Joystick(0).get_axis(1))
+        calcValue(y_speed)
         if slow_speed: y_speed = y_speed*ratio
         clientConnected.send(("y" + repr(y_speed)).encode())
         print("y_speed: " + str(y_speed))
        
         r_speed = (pygame.joystick.Joystick(0).get_axis(2))
+        calcValue(r_speed)
         if slow_speed: r_speed = r_speed*ratio
         clientConnected.send(("r" + repr(r_speed)).encode())
         print("r_speed: " + str(r_speed))
        
         v_speed = (pygame.joystick.Joystick(0).get_axis(3))
+        calcVertValue(v_speed)
         if slow_speed: v_speed = v_speed*ratio
         clientConnected.send(("v" + repr(v_speed)).encode())
         print("v_speed: " + str(v_speed))
+
+        if slow_speed: clientConnected.send("ratio"+ repr(ratio).encode())
         time.sleep(.01)
         
 if __name__ == "__main__":

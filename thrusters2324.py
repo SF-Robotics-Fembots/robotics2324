@@ -138,7 +138,8 @@ def main(ip_server):
 
 	#horizontal thrusters calculations
 	def calcHorizontal(joyValue, thrusterNum, direction):
-		if (-5 <= joyValue <= 5):         # can adjust to create deadzone
+		if (joyValue == 0):
+		#if (-5 <= joyValue <= 5):         # can adjust to create deadzone
 			return 0
 		#used to be 5 on both horizontal and vertical deadzones
 		#creates deadzones for where the joystick values do not do anything
@@ -151,7 +152,8 @@ def main(ip_server):
 
 	# vertical thrusters calculations
 	def calcVertical(joyValue, thrusterNum, direction):
-		if (-10 <= joyValue <= 10):
+		if (joyValue == 0):
+		#if (-10 <= joyValue <= 10):
 			return 0
 		# calculation for everything not 0
 		else:
