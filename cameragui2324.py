@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
         self.url_1 = 'http://192.168.1.99:8080/stream'
         self.url_2 = "http://192.168.1.99:8082/stream"
         self.url_3 = "http://192.168.1.99:8084/stream"
-        self.url_4 = 0
+        self.url_4 = "http://192.168.1.99:8086/stream"
 
         self.list_cameras = {}
 
