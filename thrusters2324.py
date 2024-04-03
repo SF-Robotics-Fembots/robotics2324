@@ -138,8 +138,8 @@ def main(ip_server):
 
 	#horizontal thrusters calculations
 	def calcHorizontal(joyValue, thrusterNum, direction):
-		if (joyValue == 0):
-		#if (-5 <= joyValue <= 5):         # can adjust to create deadzone
+		#if (joyValue == 0):
+		if (-5 <= joyValue <= 5):         # can adjust to create deadzone
 			return 0
 		#used to be 5 on both horizontal and vertical deadzones
 		#creates deadzones for where the joystick values do not do anything
@@ -152,12 +152,12 @@ def main(ip_server):
 
 	# vertical thrusters calculations
 	def calcVertical(joyValue, thrusterNum, direction):
-		if (joyValue == 0):
-		#if (-10 <= joyValue <= 10):
+		#if (joyValue == 0):
+		if (-10 <= joyValue <= 10):
 			return 0
 		# calculation for everything not 0
 		else:
-			joyValue = joyValue - ((abs(joyValue)/joyValue) * 5)
+			joyValue = joyValue - ((abs(joyValue)/joyValue) * 10) # was 5
 			return joyValue * direction[thrusterNum]
 			#return (((1/750) * ((abs(joyValue))**2.5)) * ((abs(joyValue))/(joyValue)) * direction[thrusterNum]) #was 1000
 			#vertical values change if joystick values are btwn -5 and 5
@@ -364,9 +364,9 @@ def main(ip_server):
 			finalVertDiff = abs(powerVertThrusterVals[1] - vert_off_value)
 			finalTotal = (finalHorDiff * 4) + (finalVertDiff * 2)
 			if (finalTotal != 0):
-				percent = (1950/finalTotal)
+				percent = (2100/finalTotal) #2400
 				#finds percent to display how much we are exceeding power use (ex. exceeding power limit by 5%)
-				if (finalTotal > 1950): #max is 2934
+				if (finalTotal > 2100): #was 1950, max 2934
 					for thruster in range(0, 4):
 						Diff = powerThrusterVals[thruster] - horiz_off_value
 						newDiff = Diff * (percent)
