@@ -8,7 +8,7 @@ while video1.isOpened():
     ret, frame = video1.read()
     if ret == True:
         #cv2.imshow('frame!', frame)git s
-        #cam = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-        cv2.imshow("normal frame", frame)
+        cam = cv2.rotate(frame, cv2.ROTATE_180)
+        cv2.imshow("camera 1", cam)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
