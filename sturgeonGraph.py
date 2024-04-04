@@ -3,7 +3,7 @@ import csv
 from matplotlib import pyplot as plt
 
 # Set the figure size
-plt.rcParams["figure.figsize"] = [7.00, 3.50]
+plt.rcParams["figure.figsize"] = [12, 6]
 plt.rcParams["figure.autolayout"] = True
 
 # Make a list of columns
