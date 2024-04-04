@@ -15,7 +15,7 @@ import adafruit_pca9685 #pip install adafruit-circuitpython-pca9685
 from adafruit_servokit import ServoKit #pip install adafruit-circuitpython-servokit
 import time
 #hz, ms, etc.
-import socket
+import socket, json
 #socket: one andpoint of a two-way communication link btwn two programs running the network
 
 #MOD: from array import array
@@ -196,26 +196,33 @@ def main(ip_server):
 	while True:
 		try:
 			dataFraud = (clientSocket.recv(1024)).decode()
+			thrusterMovements = json.loads(dataFraud)
 			#time.sleep(1)
 			if debug_l2: print("datafraud: " + dataFraud)
 			data = (clientSocket.recv(1024)).decode()
 			if debug_l2: print("data " + data)
 
-			x_speed = dataFraud
-			x_speed = x_speed[1:]
+
+
+			
+			#x_speed = x_speed[1:]
 			#[1:]: used for inverse orders/directions
+			x_speed = thrusterMovements['x_speed']
 			x_speed = float(x_speed)
 	
-			y_speed = data[data.find('y'):data.find('r')]
-			y_speed = y_speed[1:]
+			#y_speed = data[data.find('y'):data.find('r')]
+			#y_speed = y_speed[1:]
+			y_speed = thrusterMovements['y_speed']
 			y_speed = float(y_speed)
 			
-			r_speed = data[data.find('r'):data.find('v')]
-			r_speed = r_speed[1:]
+			#r_speed = data[data.find('r'):data.find('v')]
+			#r_speed = r_speed[1:]
+			r_speed = thrusterMovements['r_speed']
 			r_speed = float(r_speed)
 			
-			v_speed = data[data.find('v'):data.find('x')]
-			v_speed = v_speed[1:]
+			#v_speed = data[data.find('v'):data.find('x')]
+			#v_speed = v_speed[1:]
+			v_speed = thrusterMovements['v_speed']
 			v_speed = float(v_speed)
 			
 

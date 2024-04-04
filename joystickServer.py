@@ -1,6 +1,6 @@
 import pygame
 import socket
-import time
+import time, json
 
 #global ip_server
 
@@ -59,23 +59,36 @@ def main(ip_server):
 
         x_speed = (pygame.joystick.Joystick(0).get_axis(0))
         if slow_speed: x_speed = x_speed*ratio
-        clientConnected.send(("x" + repr(x_speed)).encode())
-        print("x_speed: " + str(x_speed))
+        #clientConnected.send(("x" + repr(x_speed)).encode())
+        #print("x_speed: " + str(x_speed))
         
         y_speed = (pygame.joystick.Joystick(0).get_axis(1))
         if slow_speed: y_speed = y_speed*ratio
-        clientConnected.send(("y" + repr(y_speed)).encode())
-        print("y_speed: " + str(y_speed))
+        #clientConnected.send(("y" + repr(y_speed)).encode())
+        #print("y_speed: " + str(y_speed))
        
         r_speed = (pygame.joystick.Joystick(0).get_axis(2))
         if slow_speed: r_speed = r_speed*ratio
-        clientConnected.send(("r" + repr(r_speed)).encode())
-        print("r_speed: " + str(r_speed))
+        #clientConnected.send(("r" + repr(r_speed)).encode())
+        #print("r_speed: " + str(r_speed))
        
         v_speed = (pygame.joystick.Joystick(0).get_axis(3))
         if slow_speed: v_speed = v_speed*ratio
-        clientConnected.send(("v" + repr(v_speed)).encode())
-        print("v_speed: " + str(v_speed))
+        #clientConnected.send(("v" + repr(v_speed)).encode())
+        #print("v_speed: " + str(v_speed))
+
+        #put the thruster values in the dictionary
+        thrusterMovements = {
+            'x_speed' : x_speed,
+            'y_speed' : y_speed,
+            'r_speed' : r_speed,
+            'v_speed' : v_speed
+        }
+        
+        #send the json dict
+        message = json.dumps(thrusterMovements)
+        message = message.encode()
+        clientConnected.send(message)
 
         #if slow_speed: clientConnected.send("ratio"+ repr(ratio).encode())
         time.sleep(.01)
