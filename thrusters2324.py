@@ -405,7 +405,7 @@ def main(ip_server):
 			#values(10000*65536) calculates final pw values (that number can be processed by esc)
 			#sending it to specific thrusters
 			#power calculations
-	#    	time.sleep(1)
+			time.sleep(0.01)
 
 		except ValueError:
 			print("Error")
