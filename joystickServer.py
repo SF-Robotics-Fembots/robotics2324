@@ -73,7 +73,7 @@ def main(ip_server):
         #print("r_speed: " + str(r_speed))
        
         v_speed = (pygame.joystick.Joystick(0).get_axis(3))
-        if slow_speed: v_speed = v_speed*ratio
+        #if slow_speed: v_speed = v_speed*ratio
         #clientConnected.send(("v" + repr(v_speed)).encode())
         #print("v_speed: " + str(v_speed))
 
