@@ -418,6 +418,7 @@ def main(ip_server):
 			print("Error")
 			check = (clientSocket.recv(1024)).decode()
 			print("check: " + check)
+			print("dataFraud: " + dataFraud)
 
 if __name__ == "__main__":
     main()

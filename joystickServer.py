@@ -9,7 +9,7 @@ def main(ip_server):
     print(ip_server)
 
     #ratio for thrust speeds
-    ratio = 0.4 #50%
+    ratio = 0.6 #50%
     
     pygame.joystick.init()
     joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
