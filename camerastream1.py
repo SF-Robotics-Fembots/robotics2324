@@ -9,6 +9,6 @@ while video1.isOpened():
     if ret == True:
         #cv2.imshow('frame!', frame)git s
         cam = cv2.rotate(frame, cv2.ROTATE_180)
-        cv2.imshow("camera 1", cam)
+        cv2.imshow("back gripper", cam)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

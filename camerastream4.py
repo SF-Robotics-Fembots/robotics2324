@@ -8,6 +8,6 @@ while video1.isOpened():
     if ret == True:
         #scv2.imshow('frame!', frame)
         cam = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
-        cv2.imshow("camera 4", cam)
+        cv2.imshow("front down", cam)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
