@@ -73,8 +73,8 @@ def main():
 			print("dataFraud type: " + type(dataFraud))
 
 			thrusterMovements = json.loads(dataFraud)
-			print("thruster movement dict: " + thrusterMovements)
-			print("thruster movement type: " + type(thrusterMovements))
+			print("thruster movement dict: " + str(thrusterMovements))
+			print("thruster movement type: " + str(type(thrusterMovements)))
 			time.sleep(3)
 			if debug_l2: print("datafraud: " + dataFraud)
 			data = (clientSocket.recv(1024)).decode()
