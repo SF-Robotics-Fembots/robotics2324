@@ -196,7 +196,10 @@ def main(ip_server):
 	while True:
 		try:
 			dataFraud = (clientSocket.recv(1024)).decode()
+			print(type(dataFraud))
+
 			thrusterMovements = json.loads(dataFraud)
+			print(thrusterMovements)
 			#time.sleep(1)
 			if debug_l2: print("datafraud: " + dataFraud)
 			data = (clientSocket.recv(1024)).decode()
