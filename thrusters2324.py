@@ -196,8 +196,8 @@ def main(ip_server):
 	while True:
 		try:
 			dataFraud = (clientSocket.recv(1024)).decode()
-			print(type(dataFraud))
-
+			first_dict_end = dataFraud.find("}")
+			dataFraud = dataFraud[0:(first_dict_end+1)]
 			thrusterMovements = json.loads(dataFraud)
 			print(thrusterMovements)
 			#time.sleep(1)
@@ -269,11 +269,11 @@ def main(ip_server):
 			r_speed = int((r_speed)*25)
 			v_speed = int((v_speed)*85)
 
-			print("R Speed: " + str(r_speed))
+			#print("R Speed: " + str(r_speed))
 			#rotation compensation :(
 			r_speed = int(r_speed + rot_comp * y_speed)
 
-			print("R Speed: " + str(r_speed) + ", Y Speed: " + str(y_speed))
+			#print("R Speed: " + str(r_speed) + ", Y Speed: " + str(y_speed))
 			#calculate new speeds
 			#rotation is not 50 because 50 is too fast
             #MOD: value_speed = int((value_speed)*50)
