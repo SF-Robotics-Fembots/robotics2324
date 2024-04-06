@@ -8,7 +8,10 @@ import time
 
 
 '''
-add two labels that tell when laser is on and when pilot inverison is on
+screenshot for photogrammetry
+show when in pilot inversion
+show thruster values
+show temperature sensor values(not working yet)
 '''
 
 #creates main GUI window

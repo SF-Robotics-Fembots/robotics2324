@@ -29,7 +29,12 @@ class CaptureCam(QThread):
                     bytes_per_line = width * channels
                     cv_rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     qt_rgb_image = QImage(cv_rgb_image.data, width, height, bytes_per_line, QImage.Format_RGB888)
-                    qt_rgb_image_scaled = qt_rgb_image.scaled(1280, 720, Qt.KeepAspectRatio)
+                    qt_rgb_image_scaled = qt_rgb_image.scaled(520, 480, Qt.KeepAspectRatio)
+                    '''if self.url == 'http://192.168.1.99:8080/stream':
+                        qt_rgb_image_scaled = cv2.rotate(qt_rgb_image_scaled, cv2.ROTATE_180)
+                    if self.url == "http://192.168.1.99:8086/stream":
+                        qt_rgb_image_scaled = cv2.rotate(qt_rgb_image_scaled, cv2.ROTATE_90_COUNTERCLOCKWISE)
+'''
                     self.ImageUpdate.emit(qt_rgb_image_scaled)
                 else:
                     break
@@ -46,10 +51,15 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         #get camera streams
-        self.url_1 = 'http://192.168.1.99:8080/stream'
-        self.url_2 = "http://192.168.1.99:8082/stream"
-        self.url_3 = "http://192.168.1.99:8084/stream"
-        self.url_4 = "http://192.168.1.99:8086/stream"
+        #self.url_1 = 'http://192.168.1.99:8080/stream'
+        #self.url_2 = "http://192.168.1.99:8082/stream"
+        #self.url_3 = "http://192.168.1.99:8084/stream"
+        #self.url_4 = "http://192.168.1.99:8086/stream"
+
+        self.url_1 = 0
+        self.url_2 = 0
+        self.url_3 = 0
+        self.url_4 = 0
 
         self.list_cameras = {}
 
@@ -104,6 +114,19 @@ class MainWindow(QMainWindow):
         self.QScrollArea_4.setWidgetResizable(True)
         self.QScrollArea_4.setWidget(self.camera_4)
 
+        self.camera1_label = QLabel("BACK GRIPPER", self)
+        self.camera1_label.setStyleSheet("color: #F1F6FD")
+        self.camera1_label.setAlignment(Qt.AlignCenter)
+        self.camera2_label = QLabel("FRONT GRIPPER", self)
+        self.camera2_label.setStyleSheet("color: #F1F6FD")
+        self.camera2_label.setAlignment(Qt.AlignCenter)
+        self.camera3_label = QLabel("BACK DOWN", self)
+        self.camera3_label.setStyleSheet("color: #F1F6FD")
+        self.camera3_label.setAlignment(Qt.AlignCenter)
+        self.camera4_label = QLabel("FRONT DOWN", self)
+        self.camera4_label.setStyleSheet("color: #F1F6FD")
+        self.camera4_label.setAlignment(Qt.AlignCenter)
+
         self.__SetupUI()
 
         #connects to ImageUpdate to keep updating the frames
@@ -130,15 +153,19 @@ class MainWindow(QMainWindow):
         grid_layout.setContentsMargins(0, 0, 0, 0)
         grid_layout.addWidget(self.QScrollArea_1, 0, 0)
         grid_layout.addWidget(self.QScrollArea_2, 0, 1)
-        grid_layout.addWidget(self.QScrollArea_3, 1, 0)
-        grid_layout.addWidget(self.QScrollArea_4, 1, 1)
+        grid_layout.addWidget(self.camera1_label, 1, 0)
+        grid_layout.addWidget(self.camera2_label, 1, 1)
+        grid_layout.addWidget(self.QScrollArea_3, 2, 0)
+        grid_layout.addWidget(self.QScrollArea_4, 2, 1)
+        grid_layout.addWidget(self.camera3_label, 3, 0)
+        grid_layout.addWidget(self.camera4_label, 3, 1)
 
         self.widget = QWidget(self)
         self.widget.setLayout(grid_layout)
 
         self.setCentralWidget(self.widget)
-        self.setMinimumSize(800, 600)
-        self.showMaximized()
+        self.setMinimumSize(1570, 1440)
+        #self.showMaximized()
         self.setStyleSheet("QMainWindow {background: 'midnightblue';}")
 
         self.setWindowTitle("CAMERA GUI")
@@ -167,44 +194,68 @@ class MainWindow(QMainWindow):
                     self.QScrollArea_2.hide()
                     self.QScrollArea_3.hide()
                     self.QScrollArea_4.hide()
+                    self.camera2_label.hide()
+                    self.camera3_label.hide()
+                    self.camera4_label.hide()
                     self.list_cameras["Camera_1"] = "Maximized"
                 else:
                     self.QScrollArea_2.show()
                     self.QScrollArea_3.show()
                     self.QScrollArea_4.show()
+                    self.camera2_label.show()
+                    self.camera3_label.show()
+                    self.camera4_label.show()
                     self.list_cameras["Camera_1"] = "Normal"
             elif source.objectName() == 'Camera_2':
                 if self.list_cameras["Camera_2"] == "Normal":
                     self.QScrollArea_1.hide()
                     self.QScrollArea_3.hide()
                     self.QScrollArea_4.hide()
+                    self.camera1_label.hide()
+                    self.camera3_label.hide()
+                    self.camera4_label.hide()
                     self.list_cameras["Camera_2"] = "Maximized"
                 else:
                     self.QScrollArea_1.show()
                     self.QScrollArea_3.show()
                     self.QScrollArea_4.show()
+                    self.camera1_label.show()
+                    self.camera3_label.show()
+                    self.camera4_label.show()
                     self.list_cameras["Camera_2"] = "Normal"
             elif source.objectName() == 'Camera_3':
                 if self.list_cameras["Camera_3"] == "Normal":
                     self.QScrollArea_1.hide()
                     self.QScrollArea_2.hide()
                     self.QScrollArea_4.hide()
+                    self.camera1_label.hide()
+                    self.camera2_label.hide()
+                    self.camera4_label.hide()
                     self.list_cameras["Camera_3"] = "Maximized"
                 else:
                     self.QScrollArea_1.show()
                     self.QScrollArea_2.show()
                     self.QScrollArea_4.show()
+                    self.camera1_label.show()
+                    self.camera2_label.show()
+                    self.camera4_label.show()
                     self.list_cameras["Camera_3"] = "Normal"
             elif source.objectName() == 'Camera_4':
                 if self.list_cameras["Camera_4"] == "Normal":
                     self.QScrollArea_1.hide()
                     self.QScrollArea_2.hide()
                     self.QScrollArea_3.hide()
+                    self.camera1_label.hide()
+                    self.camera2_label.hide()
+                    self.camera3_label.hide()
                     self.list_cameras["Camera_4"] = "Maximized"
                 else:
                     self.QScrollArea_1.show()
                     self.QScrollArea_2.show()
                     self.QScrollArea_3.show()
+                    self.camera1_label.show()
+                    self.camera2_label.show()
+                    self.camera3_label.show()
                     self.list_cameras["Camera_4"] = "Normal"
             else:
                 return super(MainWindow, self).eventFilter(source, event)
