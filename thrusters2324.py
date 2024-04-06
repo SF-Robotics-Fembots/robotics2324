@@ -15,7 +15,7 @@ import adafruit_pca9685 #pip install adafruit-circuitpython-pca9685
 from adafruit_servokit import ServoKit #pip install adafruit-circuitpython-servokit
 import time
 #hz, ms, etc.
-import socket, json
+import socket, json, sys
 #socket: one andpoint of a two-way communication link btwn two programs running the network
 
 #MOD: from array import array
@@ -422,6 +422,7 @@ def main(ip_server):
 			check = (clientSocket.recv(1024)).decode()
 			print("check: " + check)
 			print("dataFraud: " + dataFraud)
+			print("dataFraud: " + dataFraud, file = sys.stderr)
 
 if __name__ == "__main__":
     main()
