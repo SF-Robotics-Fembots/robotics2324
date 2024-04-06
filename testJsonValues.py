@@ -75,19 +75,17 @@ def main():
 			thrusterMovements = json.loads(dataFraud)
 			print("thruster movement dict: " + str(thrusterMovements))
 			print("thruster movement type: " + str(type(thrusterMovements)))
-			time.sleep(3)
 			if debug_l2: print("datafraud: " + dataFraud)
 			data = (clientSocket.recv(1024)).decode()
 			if debug_l2: print("data " + data)
 			#power calculations
-			time.sleep(2)
+			time.sleep(0.01)
 
 		except ValueError:
 			print("Error")
 			check = (clientSocket.recv(1024)).decode()
 			print("check: " + check)
 			print("dataFraud: " + dataFraud)
-			time.sleep(2)
 
 if __name__ == "__main__":
     main()
