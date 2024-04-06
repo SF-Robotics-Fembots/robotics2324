@@ -29,11 +29,15 @@ class CaptureCam(QThread):
                     bytes_per_line = width * channels
                     cv_rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     qt_rgb_image = QImage(cv_rgb_image.data, width, height, bytes_per_line, QImage.Format_RGB888)
-                    qt_rgb_image_scaled = qt_rgb_image.scaled(520, 480, Qt.KeepAspectRatio)
                     if self.url == 'http://192.168.1.99:8080/stream':
-                        qt_rgb_image_scaled = cv2.rotate(qt_rgb_image_scaled, cv2.ROTATE_180)
-                    if self.url == "http://192.168.1.99:8086/stream":
-                        qt_rgb_image_scaled = cv2.rotate(qt_rgb_image_scaled, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                        cam_rotate = cv2.rotate(qt_rgb_image, cv2.ROTATE_180)
+                        qt_rgb_image_scaled = cam_rotate.scaled(520, 480, Qt.KeepAspectRatio)
+                    elif self.url == "http://192.168.1.99:8086/stream":
+                        cam_rotate = cv2.rotate(qt_rgb_image, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                        qt_rgb_image_scaled = qt_rgb_image_scaled(520, 480, Qt.KeepAspectRatio)
+                    else:
+                        qt_rgb_image_scaled = qt_rgb_image.scaled(520, 480, Qt.KeepAspectRatio)
+                        
                     self.ImageUpdate.emit(qt_rgb_image_scaled)
                 else:
                     break
