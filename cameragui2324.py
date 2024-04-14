@@ -1,12 +1,28 @@
 # import the require packages.
 import cv2
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
-    QLabel, QGridLayout, QScrollArea, QSizePolicy
+    QLabel, QGridLayout, QScrollArea, QSizePolicy, QWidget, QPushButton
 from PyQt5.QtGui import QPixmap, QIcon, QImage, QPalette
 from PyQt5.QtCore import QThread, pyqtSignal, Qt, QEvent, QObject
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from PyQt5 import QtCore
 import sys
-
+import time
+from PyQt5 import *
+from PyQt5 import QtWidgets
+import cv2
+import sys
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+import numpy as np
+from tkinter import *
+import tkinter as tk
+import pyautogui as pg
+import time
+import pygetwindow
+from PIL import Image
 #gets camera frames
 class CaptureCam(QThread):
     ImageUpdate = pyqtSignal(QImage)
@@ -55,7 +71,7 @@ class MainWindow(QMainWindow):
         self.url_1 = 'http://192.168.1.99:8080/stream'
         self.url_2 = "http://192.168.1.99:8082/stream"
         self.url_3 = "http://192.168.1.99:8084/stream"
-        self.url_4 = "http://192.168.1.99:8086/stream"
+        self.url_4 = "http://192.168.1.99:8086/stream" #photogrammetry cam
 
         #self.url_1 = 0
         #self.url_2 = 0
@@ -128,6 +144,11 @@ class MainWindow(QMainWindow):
         self.camera4_label.setStyleSheet("color: #F1F6FD")
         self.camera4_label.setAlignment(Qt.AlignCenter)
 
+        #screenshot stuff
+        self.SSbutton = QPushButton("Screenshot", self)
+        self.SSbutton.setToolTip('This is a screenshot button!')
+        self.SSbutton.clicked.connect(self.screen_shot)
+
         self.__SetupUI()
 
         #connects to ImageUpdate to keep updating the frames
@@ -161,6 +182,8 @@ class MainWindow(QMainWindow):
         grid_layout.addWidget(self.camera3_label, 3, 0)
         grid_layout.addWidget(self.camera4_label, 3, 1)
 
+        grid_layout.addWidget(self.SSbutton)
+
         self.widget = QWidget(self)
         self.widget.setLayout(grid_layout)
 
@@ -186,6 +209,19 @@ class MainWindow(QMainWindow):
     @QtCore.pyqtSlot()
     def ShowCamera4(self, frame: QImage) -> None:
         self.camera_4.setPixmap(QPixmap.fromImage(frame))
+
+    #screenshot function
+    def screen_shot(self):
+        random = int(time.time())
+        file = "C:/Users/rosar/Downloads/guiSS/" + str(random) + ".png"
+        window = pygetwindow.getWindowsWithTitle('CAMERA GUI')[0]
+        left, top = window.topleft
+        right, bottom = window.bottomright
+        pg.screenshot(file)
+        im = Image.open(file)
+        im = im.crop((left+695, top+370, right-15, bottom-55))
+        im.save(file)
+        im.show(file)
 
 # funtcion maximizes certain windows when double clicked
     def eventFilter(self, source: QObject, event: QEvent):
