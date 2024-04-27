@@ -42,8 +42,8 @@ class CaptureCam(QThread):
                 #rotating cameras
                 if self.url == 'http://192.168.1.99:8080/stream':
                     frame = cv2.rotate(frame, cv2.ROTATE_180)
-                elif self.url == "http://192.168.1.99:8086/stream":
-                    frame = cv2.rotate(frame, cv2.ROTATE_180)
+                #elif self.url == "http://192.168.1.99:8086/stream":
+                    #frame = cv2.rotate(frame, cv2.ROTATE_180)
                 # frame setup
                 if ret:
                     height, width, channels = frame.shape
@@ -145,10 +145,10 @@ class MainWindow(QMainWindow):
         self.camera4_label.setAlignment(Qt.AlignCenter)
 
         #screenshot stuff
-        self.SSbutton = QPushButton("Screenshot", self)
-        self.SSbutton.setToolTip('This is a screenshot button!')
+        self.SSbutton = QPushButton("                            SCREENSHOT                         ", self)
+        self.SSbutton.setToolTip('screenshot')
         self.SSbutton.clicked.connect(self.screen_shot)
-
+        self.SSbutton.setStyleSheet("color: midnightblue; background: #F1F6FD;")
         self.__SetupUI()
 
         #connects to ImageUpdate to keep updating the frames
@@ -182,7 +182,9 @@ class MainWindow(QMainWindow):
         grid_layout.addWidget(self.camera3_label, 3, 0)
         grid_layout.addWidget(self.camera4_label, 3, 1)
 
-        grid_layout.addWidget(self.SSbutton)
+        grid_layout.addWidget(self.SSbutton, 4, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignHCenter)
+        #grid_layout.setRowMinimumHeight(3, 1)
+        #grid_layout.setRowMinimumHeight(4, 2)
 
         self.widget = QWidget(self)
         self.widget.setLayout(grid_layout)
