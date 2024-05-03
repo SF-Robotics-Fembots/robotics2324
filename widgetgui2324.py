@@ -44,42 +44,34 @@ class Window(QMainWindow):
 		self.camera_label.setAlignment(Qt.AlignCenter)
 		self.camera_label.move(1380, 90)
 		
-	    #front camera button and styling
-		front_button = QPushButton("Front", self)
-		front_button.setGeometry(125, 350, 400, 170)
-		front_button.move (1400, 220)
-		front_button.setStyleSheet("border-radius: 25; border: 3px solid midnightblue; color: midnightblue")
-		front_button.setFont(QFont('Time', 11))
-
-		
-
 	    #pilot inversion camera button and styling
-		inverse_button = QPushButton("Inversion", self)
-		inverse_button.setGeometry(125, 350, 400, 170)
-		inverse_button.move (1400, 400)
-		inverse_button.setStyleSheet("border-radius: 25; border: 3px solid midnightblue; color: midnightblue")
-		inverse_button.setFont(QFont('Time', 11))
 
-        #humidity sensor and styling
-		self.humidity_sensor = QLabel("Humidity Sensor: ", self)
-		self.humidity_sensor.setGeometry(120, 350, 335, 200)
-		self.humidity_sensor.move(630, 380)
+		self.humidity_sensor = QLabel("Inversion Status: ", self)
+		self.humidity_sensor.setGeometry(120, 350, 400, 200)
+		self.humidity_sensor.move(1400, 220)
 		self.humidity_sensor.setAlignment(Qt.AlignLeft)
 		self.humidity_sensor.setStyleSheet("border-radius : 10; border: 3px solid midnightblue; color: midnightblue; padding: 15px")
-
-        #depth sensor and styling
-		self.depth_sensor = QLabel("Depth Sensor: ", self)
-		self.depth_sensor.setGeometry(120, 350, 335, 200)
-		self.depth_sensor.move(970, 380)
-		self.depth_sensor.setAlignment(Qt.AlignLeft)
-		self.depth_sensor.setStyleSheet("border-radius : 10; border: 3px solid midnightblue; color: midnightblue; padding: 15px")
 		
-
 		self.thruster_values = QLabel("Thruster Values: ", self)
-		self.thruster_values.setGeometry(120, 350, 335, 200)
-		self.thruster_values.move(630, 600)
+		self.thruster_values.setGeometry(120, 350, 335, 400)
+		self.thruster_values.move(630, 380)
 		self.thruster_values.setAlignment(Qt.AlignLeft)
 		self.thruster_values.setStyleSheet("border-radius : 15; border: 3px solid midnightblue; color: midnightblue; padding: 15px")
+
+        #humidity sensor and styling
+		self.temp_sensor = QLabel("Temperature Sensor Values: ", self)
+		self.temp_sensor.setGeometry(120, 350, 335, 400)
+		self.temp_sensor.move(970, 380)
+		self.temp_sensor.setAlignment(Qt.AlignLeft)
+		self.temp_sensor.setStyleSheet("border-radius : 10; border: 3px solid midnightblue; color: midnightblue; padding: 15px")
+
+        #depth sensor and styling
+		'''self.depth_sensor = QLabel("Depth Sensor: ", self)
+		self.depth_sensor.setGeometry(120, 350, 335, 200)
+		self.depth_sensor.move(630, 600)
+		self.depth_sensor.setAlignment(Qt.AlignLeft)
+		self.depth_sensor.setStyleSheet("border-radius : 10; border: 3px solid midnightblue; color: midnightblue; padding: 15px")'''
+		
 		
         #notepad label styling
 		self.notepad_label = QLabel("NOTEPAD", self)

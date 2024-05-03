@@ -1,7 +1,6 @@
 # import the require packages.
 import cv2
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, \
-    QLabel, QGridLayout, QScrollArea, QSizePolicy, QWidget, QPushButton
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap, QIcon, QImage, QPalette
 from PyQt5.QtCore import QThread, pyqtSignal, Qt, QEvent, QObject
 from PyQt5.QtCore import *
@@ -21,9 +20,10 @@ from tkinter import *
 import tkinter as tk
 import pyautogui as pg
 import time
-import pygetwindow
+from PyQt5.QtMultimedia import *
+from PyQt5.QtMultimediaWidgets import *
 from PIL import Image
-
+import os
 #gets camera frames
 class CaptureCam(QThread):
     ImageUpdate = pyqtSignal(QImage)
@@ -40,8 +40,11 @@ class CaptureCam(QThread):
             while self.threadActive:
                 #
                 ret, frame = capture.read()
-                if self.url == 0:
+                #rotating cameras
+                if self.url == 'http://192.168.1.99:8080/stream':
                     frame = cv2.rotate(frame, cv2.ROTATE_180)
+                #elif self.url == "http://192.168.1.99:8086/stream":
+                    #frame = cv2.rotate(frame, cv2.ROTATE_180)
                 # frame setup
                 if ret:
                     height, width, channels = frame.shape
@@ -49,7 +52,7 @@ class CaptureCam(QThread):
                     cv_rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     qt_rgb_image = QImage(cv_rgb_image.data, width, height, bytes_per_line, QImage.Format_RGB888)
                     qt_rgb_image_scaled = qt_rgb_image.scaled(520, 480, Qt.KeepAspectRatio)
-                        
+
                     self.ImageUpdate.emit(qt_rgb_image_scaled)
                 else:
                     break
@@ -66,8 +69,10 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         #get camera streams
-        self.url_1 = 1
-        self.url_2 = 0
+        self.url_1 = 'http://192.168.1.99:8080/stream'
+        self.url_2 = "http://192.168.1.99:8082/stream"
+        self.url_3 = "http://192.168.1.99:8084/stream"
+        self.url_4 = "http://192.168.1.99:8086/stream" #photogrammetry cam
 
         #self.url_1 = 0
         #self.url_2 = 0
@@ -101,18 +106,50 @@ class MainWindow(QMainWindow):
         self.QScrollArea_2.setWidgetResizable(True)
         self.QScrollArea_2.setWidget(self.camera_2)
 
+    
+        self.camera_3 = QLabel()
+        self.camera_3.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.camera_3.setScaledContents(True)
+        self.camera_3.installEventFilter(self)
+        self.camera_3.setObjectName("Camera_3")
+        self.list_cameras["Camera_3"] = "Normal"
+
+        self.QScrollArea_3 = QScrollArea()
+        self.QScrollArea_3.setBackgroundRole(QPalette.Dark)
+        self.QScrollArea_3.setWidgetResizable(True)
+        self.QScrollArea_3.setWidget(self.camera_3)
+
+
+        self.camera_4 = QLabel()
+        self.camera_4.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.camera_4.setScaledContents(True)
+        self.camera_4.installEventFilter(self)
+        self.camera_4.setObjectName("Camera_4")
+        self.list_cameras["Camera_4"] = "Normal"
+
+        self.QScrollArea_4 = QScrollArea()
+        self.QScrollArea_4.setBackgroundRole(QPalette.Dark)
+        self.QScrollArea_4.setWidgetResizable(True)
+        self.QScrollArea_4.setWidget(self.camera_4)
+
         self.camera1_label = QLabel("BACK GRIPPER", self)
         self.camera1_label.setStyleSheet("color: #F1F6FD")
         self.camera1_label.setAlignment(Qt.AlignCenter)
         self.camera2_label = QLabel("FRONT GRIPPER", self)
         self.camera2_label.setStyleSheet("color: #F1F6FD")
         self.camera2_label.setAlignment(Qt.AlignCenter)
+        self.camera3_label = QLabel("BACK DOWN", self)
+        self.camera3_label.setStyleSheet("color: #F1F6FD")
+        self.camera3_label.setAlignment(Qt.AlignCenter)
+        self.camera4_label = QLabel("FRONT DOWN", self)
+        self.camera4_label.setStyleSheet("color: #F1F6FD")
+        self.camera4_label.setAlignment(Qt.AlignCenter)
 
         #screenshot stuff
-        self.SSbutton = QPushButton("Screenshot", self)
-        self.SSbutton.setToolTip('This is a screenshot button!')
+        self.SSbutton = QPushButton("                            SCREENSHOT                         ", self)
+        self.SSbutton.setToolTip('screenshot')
         self.SSbutton.clicked.connect(self.screen_shot)
-
+        self.SSbutton.setStyleSheet("color: midnightblue; background: #F1F6FD;")
         self.__SetupUI()
 
         #connects to ImageUpdate to keep updating the frames
@@ -122,9 +159,17 @@ class MainWindow(QMainWindow):
         self.CaptureCam_2 = CaptureCam(self.url_2)
         self.CaptureCam_2.ImageUpdate.connect(lambda image: self.ShowCamera2(image))
 
+        self.CaptureCam_3 = CaptureCam(self.url_3)
+        self.CaptureCam_3.ImageUpdate.connect(lambda image: self.ShowCamera3(image))
+
+        self.CaptureCam_4 = CaptureCam(self.url_4)
+        self.CaptureCam_4.ImageUpdate.connect(lambda image: self.ShowCamera4(image))
+
         #.start() runs the .run() function in CaptureCam that changes frame settings
         self.CaptureCam_1.start()
         self.CaptureCam_2.start()
+        self.CaptureCam_3.start()
+        self.CaptureCam_4.start()
 
     def __SetupUI(self):
         grid_layout = QGridLayout()
@@ -133,10 +178,15 @@ class MainWindow(QMainWindow):
         grid_layout.addWidget(self.QScrollArea_2, 0, 1)
         grid_layout.addWidget(self.camera1_label, 1, 0)
         grid_layout.addWidget(self.camera2_label, 1, 1)
+        grid_layout.addWidget(self.QScrollArea_3, 2, 0)
+        grid_layout.addWidget(self.QScrollArea_4, 2, 1)
+        grid_layout.addWidget(self.camera3_label, 3, 0)
+        grid_layout.addWidget(self.camera4_label, 3, 1)
 
-        #ss button
-        grid_layout.addWidget(self.SSbutton)
-       
+        grid_layout.addWidget(self.SSbutton, 4, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignHCenter)
+        #grid_layout.setRowMinimumHeight(3, 1)
+        #grid_layout.setRowMinimumHeight(4, 2)
+
         self.widget = QWidget(self)
         self.widget.setLayout(grid_layout)
 
@@ -155,18 +205,33 @@ class MainWindow(QMainWindow):
     def ShowCamera2(self, frame: QImage) -> None:
         self.camera_2.setPixmap(QPixmap.fromImage(frame))
 
-#screenshot function
+    @QtCore.pyqtSlot()
+    def ShowCamera3(self, frame: QImage) -> None:
+        self.camera_3.setPixmap(QPixmap.fromImage(frame))
+
+    @QtCore.pyqtSlot()
+    def ShowCamera4(self, frame: QImage) -> None:
+        self.camera_4.setPixmap(QPixmap.fromImage(frame))
+
+    #screenshot function
     def screen_shot(self):
+        self.capture = QCameraImageCapture()
         random = int(time.time())
-        file = "C:/Users/rosar/Downloads/guiSS/" + str(random) + ".png"
-        window = pygetwindow.getWindowsWithTitle('CAMERA GUI')[self.url_2]
+        file = "C:/Users/alyss/Downloads/" + str(random) + ".png"
+        self.capture.capture(os.path.join(self.save_path, file % (
+            self.CaptureCam_1,
+            self.save_seq,
+            random
+        )))
+        self.save_seq += 1
+        '''window = pygetwindow.getWindowsWithTitle('CAMERA GUI')[0]
         left, top = window.topleft
         right, bottom = window.bottomright
         pg.screenshot(file)
         im = Image.open(file)
-        im = im.crop((left+695, top, right-15, bottom-60))
+        im = im.crop((left+695, top+370, right-15, bottom-55))
         im.save(file)
-        im.show(file)
+        im.show(file)'''
 
 # funtcion maximizes certain windows when double clicked
     def eventFilter(self, source: QObject, event: QEvent):
@@ -205,6 +270,40 @@ class MainWindow(QMainWindow):
                     self.camera3_label.show()
                     self.camera4_label.show()
                     self.list_cameras["Camera_2"] = "Normal"
+            elif source.objectName() == 'Camera_3':
+                if self.list_cameras["Camera_3"] == "Normal":
+                    self.QScrollArea_1.hide()
+                    self.QScrollArea_2.hide()
+                    self.QScrollArea_4.hide()
+                    self.camera1_label.hide()
+                    self.camera2_label.hide()
+                    self.camera4_label.hide()
+                    self.list_cameras["Camera_3"] = "Maximized"
+                else:
+                    self.QScrollArea_1.show()
+                    self.QScrollArea_2.show()
+                    self.QScrollArea_4.show()
+                    self.camera1_label.show()
+                    self.camera2_label.show()
+                    self.camera4_label.show()
+                    self.list_cameras["Camera_3"] = "Normal"
+            elif source.objectName() == 'Camera_4':
+                if self.list_cameras["Camera_4"] == "Normal":
+                    self.QScrollArea_1.hide()
+                    self.QScrollArea_2.hide()
+                    self.QScrollArea_3.hide()
+                    self.camera1_label.hide()
+                    self.camera2_label.hide()
+                    self.camera3_label.hide()
+                    self.list_cameras["Camera_4"] = "Maximized"
+                else:
+                    self.QScrollArea_1.show()
+                    self.QScrollArea_2.show()
+                    self.QScrollArea_3.show()
+                    self.camera1_label.show()
+                    self.camera2_label.show()
+                    self.camera3_label.show()
+                    self.list_cameras["Camera_4"] = "Normal"
             else:
                 return super(MainWindow, self).eventFilter(source, event)
             return True
@@ -216,6 +315,10 @@ class MainWindow(QMainWindow):
             self.CaptureCam_1.quit()
         if self.CaptureCam_2.isRunning():
             self.CaptureCam_2.quit()
+        if self.CaptureCam_3.isRunning():
+            self.CaptureCam_3.quit()
+        if self.CaptureCam_4.isRunning():
+            self.CaptureCam_4.quit()
         event.accept()
 
 
