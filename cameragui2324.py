@@ -42,8 +42,8 @@ class CaptureCam(QThread):
                 #rotating cameras
                 if self.url == 'http://192.168.1.99:8080/stream':
                     frame = cv2.rotate(frame, cv2.ROTATE_180)
-                #elif self.url == "http://192.168.1.99:8086/stream":
-                    #frame = cv2.rotate(frame, cv2.ROTATE_180)
+                elif self.url == "http://192.168.1.99:8086/stream":
+                    frame = cv2.rotate(frame, cv2.ROTATE_180)
                 # frame setup
                 if ret:
                     height, width, channels = frame.shape
@@ -215,13 +215,13 @@ class MainWindow(QMainWindow):
     #screenshot function
     def screen_shot(self):
         random = int(time.time())
-        file = "C:/Users/rosar/Downloads/guiSS/" + str(random) + ".png"
+        file = "D:/screenshots" + str(random) + ".png"
         window = pygetwindow.getWindowsWithTitle('CAMERA GUI')[0]
         left, top = window.topleft
         right, bottom = window.bottomright
         pg.screenshot(file)
         im = Image.open(file)
-        im = im.crop((left+695, top+370, right-15, bottom-55))
+        im = im.crop((left, top, right, bottom))
         im.save(file)
         im.show(file)
 

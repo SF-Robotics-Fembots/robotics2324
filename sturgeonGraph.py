@@ -7,14 +7,14 @@ plt.rcParams["figure.figsize"] = [12, 6]
 plt.rcParams["figure.autolayout"] = True
 
 # Make a list of columns
-columns = ['receiver 1', 'receiver 2', 'receiver 3']
+columns = ['Receiver 1', 'Receiver 2', 'Receiver 3']
 
 # change the filename to where the actual data is stored
 df = pd.read_csv("C:/Users/kthog/Downloads/csv data prep table - Sheet1.csv", usecols=columns)
 
 # Plot the lines
 
-df.plot(color=['#6495F2', '#06A6AB', '#34E9D5'])
+df.plot(color=['blue', 'red', 'yellow'])
 
 plt.title("Number of Sturgeon detected at each receiver over time")
 
