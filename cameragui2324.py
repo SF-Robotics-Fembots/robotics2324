@@ -145,11 +145,11 @@ class MainWindow(QMainWindow):
         self.camera4_label.setAlignment(Qt.AlignCenter)
 
         #screenshot stuff
-        self.SSbutton = QPushButton("                            SCREENSHOT                         ", self)
-        self.SSbutton.setToolTip('screenshot')
-        self.SSbutton.clicked.connect(self.screen_shot)
-        self.SSbutton.setStyleSheet("color: midnightblue; background: #F1F6FD;")
-        self.__SetupUI()
+        #self.SSbutton = QPushButton("                            SCREENSHOT                         ", self)
+        #self.SSbutton.setToolTip('screenshot')
+        #self.SSbutton.clicked.connect(self.screen_shot)
+        #self.SSbutton.setStyleSheet("color: midnightblue; background: #F1F6FD;")
+        #self.__SetupUI()
 
         #connects to ImageUpdate to keep updating the frames
         self.CaptureCam_1 = CaptureCam(self.url_1)
