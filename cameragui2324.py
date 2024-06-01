@@ -42,6 +42,8 @@ class CaptureCam(QThread):
                 #rotating cameras
                 if self.url == 'http://192.168.1.99:8080/stream':
                     frame = cv2.rotate(frame, cv2.ROTATE_180)
+                elif self.url == "http://192.168.1.99:8084/stream":
+                    frame = cv2.rotate(frame, cv2.ROTATE_180)
                 elif self.url == "http://192.168.1.99:8086/stream":
                     frame = cv2.rotate(frame, cv2.ROTATE_180)
                 # frame setup
