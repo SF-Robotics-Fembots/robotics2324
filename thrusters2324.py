@@ -34,7 +34,7 @@ def main(ip_server):
 	debug_l2 = 0
 
 	#rotation compensation
-	rot_comp = -0.08
+	rot_comp = -0.28 #was -0.08
 
 	i2c = busio.I2C(board.SCL, board.SDA)
 	#SCL: serial clock number
@@ -153,7 +153,7 @@ def main(ip_server):
 	# vertical thrusters calculations
 	def calcVertical(joyValue, thrusterNum, direction):
 		#if (joyValue == 0):
-		if (-10 <= joyValue <= 10):
+		if (-15 <= joyValue <= 15):
 			return 0
 		# calculation for everything not 0
 		else:
@@ -298,9 +298,10 @@ def main(ip_server):
 			#xDirArray = [-1*direction, 1*direction, -1*direction, 1*direction]
 			#yDirArray = [1*direction, 1*direction, -1*direction, -1*direction]
 			#rDirArray = [-1, 1, 1, -1]
-			xDirArray = [1*direction, 1*direction, 1*direction, -1*direction]
-			yDirArray = [-1*direction, 1*direction, 1*direction, 1*direction]
-			rDirArray = [1, 1, -1, 1]
+			#third thruster is now cw so the signs got flipped
+			xDirArray = [1*direction, 1*direction, -1*direction, -1*direction]
+			yDirArray = [-1*direction, 1*direction, -1*direction, 1*direction]
+			rDirArray = [1, 1, 1, 1]
 			vDirArray = [-1, -1]
 			#this section is basically inverse pilot
 			#while this code is being processed, directions (left & right, front & back), are inversed when pilot switches cameras
